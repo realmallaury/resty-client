@@ -14,8 +14,6 @@ func TestUnmarshallToAccount(t *testing.T) {
 	expectedAcc := getTestAccount()
 	acc, err := UnmarshallToAccount(byteJSON)
 
-	print(err.Error())
-
 	assert.Nil(err, "Error should be nil")
 	assert.EqualValues(expectedAcc, acc, "Account should be correctely unmarshalled")
 }
@@ -38,6 +36,15 @@ func getTestAccount() Account {
 				BankIDCode:                  "GBDSC",
 				BaseCurrency:                "GBP",
 				Bic:                         "NWBKGB22",
+				Country:                     "GB",
+				FirstName:                   "Samantha",
+				Iban:                        "GB11NWBK40030041426819",
+				JointAccount:                false,
+				OrganisationIdentification: OrganisationIdentification{
+					Address: "[10 Avenue des Champs]",
+					City:    "London",
+					Country: "GB",
+				},
 			},
 		},
 	}
