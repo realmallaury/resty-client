@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -23,24 +22,24 @@ func New(hostURL string) (*AccountRestClient, error) {
 	logger := log.New(os.Stdout, "Rest client: ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
 	c := resty.New()
 
-	if !validation.ValidateURL(hostURL) {
-		return nil, fmt.Errorf("Malformed host url %v", hostURL)
+	if v, err := validation.ValidateURL(hostURL); !v || err != nil {
+		return nil, err
 	}
 	c.SetHostURL(hostURL)
 
-	rc := &AccountRestClient{
+	rc := AccountRestClient{
 		Client: c,
 		Logger: logger,
 	}
 
-	return rc, nil
+	return &rc, nil
 }
 
 // Fetch gets accound data for provided account id.
 // If account id is not valid UUID or account is not found it returns error.
 func (r *AccountRestClient) Fetch(accountID string) (*resty.Response, error) {
-	if !validation.ValidateUUID(accountID) {
-		return nil, fmt.Errorf("accountId: %v is not valid UUID format", accountID)
+	if v, err := validation.ValidateUUID(accountID); !v || err != nil {
+		return nil, err
 	}
 
 	resp, err := r.Client.R().

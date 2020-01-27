@@ -1,6 +1,6 @@
 package validation
 
-// AccountSchema is a schema that represents request for adding a new account.
+// AccountSchema is a schema that represents api account response.
 var AccountSchema = string(`
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
