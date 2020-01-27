@@ -2,7 +2,10 @@ package model
 
 import (
 	"encoding/json"
-	"github.com/asaskevich/govalidator"
+	"fmt"
+
+	"github.com/push-er/resty-client/internal/validation"
+	"github.com/xeipuuv/gojsonschema"
 )
 
 type (
@@ -13,37 +16,82 @@ type (
 
 	// Data type represents general type account data.
 	Data struct {
-		ID             string `json:"id" valid:"uuid"`
-		OrganisationID string `json:"organisation_id" valid:"uuid"`
-		Type           string `json:"type,omitempty" valid:"alpha"`
-		Version        int    `json:"version,omitempty" valid:"alphanum"`
+		ID             string `json:"id"`
+		OrganisationID string `json:"organisation_id"`
+		Type           string `json:"type,omitempty"`
+		Version        int    `json:"version,omitempty"`
 		Attributes     `json:"attributes"`
+		Relationships  `json:"relationships"`
 	}
 
 	// Attributes represents specific account data.
 	Attributes struct {
-		AccountClassification       string   `json:"account_classification,omitempty" valid:"in(Personal|Business|)"`
+		AccountClassification       string   `json:"account_classification,omitempty"`
 		AccountMatchingOptOut       bool     `json:"account_matching_opt_out,omitempty"`
-		AccountNumber               string   `json:"account_number,omitempty" valid:"alphanum, length(0|64)"`
+		AccountNumber               string   `json:"account_number,omitempty"`
 		AlternativeBankAccountNames []string `json:"alternative_bank_account_names"`
-		BankAccountName             string   `json:"bank_account_name,omitempty" valid:"length(1|140)"`
-		BankID                      string   `json:"bank_id,omitempty" valid:"alphanum, length(0|16)"`
-		BankIDCode                  string   `json:"bank_id_code,omitempty" valid:"alpha, length(0|16)"`
-		BaseCurrency                string   `json:"base_currency,omitempty" valid:"alpha, length(3|3)"`
-		Bic                         string   `json:"bic,omitempty" valid:"matches(^([A-Z]{6}[A-Z0-9]{2}|[A-Z]{6}[A-Z0-9]{5})$)"`
-		Country                     string   `json:"country" valid:"matches(^[A-Z]{2}$)"`
-		CustomerID                  string   `json:"customer_id,omitempty" valid:"alphanum, length(0|256)"`
-		FirstName                   string   `json:"first_name,omitempty" valid:"length(1|40)"`
+		BankAccountName             string   `json:"bank_account_name,omitempty"`
+		BankID                      string   `json:"bank_id,omitempty"`
+		BankIDCode                  string   `json:"bank_id_code,omitempty"`
+		BaseCurrency                string   `json:"base_currency,omitempty"`
+		Bic                         string   `json:"bic,omitempty"`
+		Country                     string   `json:"country"`
+		CustomerID                  string   `json:"customer_id,omitempty"`
+		FirstName                   string   `json:"first_name,omitempty"`
 		Iban                        string   `json:"iban,omitempty"`
 		JointAccount                bool     `json:"joint_account,omitempty"`
 		OrganisationIdentification  `json:"organisation_identification,omitempty"`
+		PrivateIdentification       `json:"private_identification,omitempty"`
+		SecondaryIdentification     string `json:"secondary_identification,omitempty"`
+		Switched                    bool   `json:"switched,omitempty"`
+		Title                       string `json:"title,omitempty"`
 	}
 
 	// OrganisationIdentification ...
 	OrganisationIdentification struct {
-		Address string `json:"address,omitempty" valid:"length(1|140)"`
-		City    string `json:"city,omitempty" valid:"length(1|35)"`
-		Country string `json:"country,omitempty" valid:"matches(^[A-Z]{2}$)"`
+		Address            string `json:"address,omitempty"`
+		City               string `json:"city,omitempty"`
+		Country            string `json:"country,omitempty"`
+		Name               string `json:"name,omitempty"`
+		RegistrationNumber string `json:"registration_number,omitempty"`
+		Representative     `json:"representative,omitempty"`
+		TaxResidency       string `json:"tax_residency,omitempty"`
+	}
+
+	// Representative ...
+	Representative struct {
+		BirthDate string `json:"birth_date,omitempty"`
+		Name      string `json:"name,omitempty"`
+		Residency string `json:"residency,omitempty"`
+	}
+
+	// PrivateIdentification ...
+	PrivateIdentification struct {
+		Address        string `json:"address,omitempty"`
+		City           string `json:"city,omitempty"`
+		BirthCountry   string `json:"birth_country,omitempty"`
+		BirthDate      string `json:"birth_date,omitempty"`
+		Country        string `json:"country,omitempty"`
+		DocumentNumber string `json:"document_number,omitempty"`
+		FirstName      string `json:"first_name,omitempty"`
+		LastName       string `json:"last_name,omitempty"`
+		Title          string `json:"title,omitempty"`
+	}
+
+	// Relationships ...
+	Relationships struct {
+		MasterAccount `json:"master_account,omitempty"`
+	}
+
+	// MasterAccount ...
+	MasterAccount struct {
+		Data []RelationshipData `json:"data,omitempty"`
+	}
+
+	// RelationshipData ...
+	RelationshipData struct {
+		ID   string `json:"id"`
+		Type string `json:"type,omitempty"`
 	}
 )
 
@@ -55,10 +103,28 @@ func UnmarshallToAccount(accountJSONResponse []byte) (Account, error) {
 		return account, err
 	}
 
-	govalidator.SetFieldsRequiredByDefault(false)
-	if v, err := govalidator.ValidateStruct(&account); !v || err != nil {
+	if v, err := validateAccount(account); !v || err != nil {
 		return account, err
 	}
 
 	return account, nil
+}
+
+func validateAccount(account Account) (bool, error) {
+	schema := gojsonschema.NewStringLoader(validation.AccountSchema)
+	loader := gojsonschema.NewGoLoader(account)
+
+	result, err := gojsonschema.Validate(schema, loader)
+	if err != nil {
+		return false, err
+	}
+	if !result.Valid() {
+		var errorMessage string
+		for _, e := range result.Errors() {
+			errorMessage = errorMessage + ", " + e.String()
+		}
+		return false, fmt.Errorf("Validate account:  %v", errorMessage)
+	}
+
+	return true, nil
 }

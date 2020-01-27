@@ -1,6 +1,8 @@
 package validation
 
-import "github.com/asaskevich/govalidator"
+import (
+	"github.com/asaskevich/govalidator"
+)
 
 func ValidateURL(URL string) bool {
 	return govalidator.IsURL(URL)

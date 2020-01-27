@@ -41,9 +41,40 @@ func getTestAccount() Account {
 				Iban:                        "GB11NWBK40030041426819",
 				JointAccount:                false,
 				OrganisationIdentification: OrganisationIdentification{
-					Address: "[10 Avenue des Champs]",
-					City:    "London",
-					Country: "GB",
+					Name:               "form3",
+					Address:            "[10 Avenue des Champs]",
+					City:               "London",
+					Country:            "GB",
+					TaxResidency:       "GB",
+					RegistrationNumber: "123654",
+					Representative: Representative{
+						Name:      "Jeff Page",
+						BirthDate: "1970-01-01",
+						Residency: "GB",
+					},
+				},
+				PrivateIdentification: PrivateIdentification{
+					Title:          "Ms",
+					FirstName:      "Samantha",
+					LastName:       "Holder",
+					BirthDate:      "2017-07-23",
+					BirthCountry:   "GB",
+					DocumentNumber: "13YH458762",
+					Address:        "[10 Avenue des Champs]",
+					City:           "London",
+					Country:        "GB",
+				},
+				SecondaryIdentification: "A1B2C3D4",
+				Title:                   "Ms",
+			},
+			Relationships: Relationships{
+				MasterAccount: MasterAccount{
+					Data: []RelationshipData{
+						RelationshipData{
+							Type: "accounts",
+							ID:   "a52d13a4-f435-4c00-cfad-f5e7ac5972df",
+						},
+					},
 				},
 			},
 		},
