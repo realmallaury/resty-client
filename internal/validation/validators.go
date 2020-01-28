@@ -53,6 +53,22 @@ func ValidateUUID(UUID string) (bool, error) {
 	return validate(schema, loader)
 }
 
+// ValidateCreateAccount validates account data for creation.
+func ValidateCreateAccount(accountJSON []byte) (bool, error) {
+	schema := gojsonschema.NewStringLoader(AddAccountSchema)
+	loader := gojsonschema.NewBytesLoader(accountJSON)
+
+	return validate(schema, loader)
+}
+
+// ValidateAccount validates account.
+func ValidateAccount(accountJSON []byte) (bool, error) {
+	schema := gojsonschema.NewStringLoader(AccountSchema)
+	loader := gojsonschema.NewBytesLoader(accountJSON)
+
+	return validate(schema, loader)
+}
+
 func validate(schema, loader gojsonschema.JSONLoader) (bool, error) {
 	result, err := gojsonschema.Validate(schema, loader)
 	if err != nil {
@@ -61,9 +77,9 @@ func validate(schema, loader gojsonschema.JSONLoader) (bool, error) {
 	if !result.Valid() {
 		var errorMessage string
 		for _, e := range result.Errors() {
-			errorMessage = errorMessage + ", " + e.String()
+			errorMessage = errorMessage + " " + e.String()
 		}
-		return false, fmt.Errorf("Validation:  %v", errorMessage)
+		return false, fmt.Errorf("Validation - %v", errorMessage)
 	}
 
 	return true, nil

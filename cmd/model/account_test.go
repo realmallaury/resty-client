@@ -18,6 +18,27 @@ func TestUnmarshallToAccount(t *testing.T) {
 	assert.EqualValues(expectedAcc, acc, "Account should be correctely unmarshalled")
 }
 
+func TestMarshallToAccount(t *testing.T) {
+	assert := assert.New(t)
+
+	acc := getTestCreateAccount()
+	_, err := MarshallToAccount(acc)
+
+	assert.Nil(err, "Error should be nil")
+}
+
+// GetTestCreateAccount returns test account for creation.
+func getTestCreateAccount() Account {
+	return Account{
+		Data: Data{
+			Attributes: Attributes{
+				Country: "GB",
+				Bic:     "NWBKGB22",
+			},
+		},
+	}
+}
+
 // GetTestAccount returns test account model.
 func getTestAccount() Account {
 	return Account{

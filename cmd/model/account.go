@@ -2,10 +2,8 @@ package model
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/push-er/resty-client/internal/validation"
-	"github.com/xeipuuv/gojsonschema"
 )
 
 type (
@@ -47,7 +45,7 @@ type (
 		Title                       string `json:"title,omitempty"`
 	}
 
-	// OrganisationIdentification ...
+	// OrganisationIdentification represents organisation data.
 	OrganisationIdentification struct {
 		Address            string `json:"address,omitempty"`
 		City               string `json:"city,omitempty"`
@@ -58,14 +56,14 @@ type (
 		TaxResidency       string `json:"tax_residency,omitempty"`
 	}
 
-	// Representative ...
+	// Representative represents organisation representative data.
 	Representative struct {
 		BirthDate string `json:"birth_date,omitempty"`
 		Name      string `json:"name,omitempty"`
 		Residency string `json:"residency,omitempty"`
 	}
 
-	// PrivateIdentification ...
+	// PrivateIdentification represents private person data.
 	PrivateIdentification struct {
 		Address        string `json:"address,omitempty"`
 		City           string `json:"city,omitempty"`
@@ -78,53 +76,49 @@ type (
 		Title          string `json:"title,omitempty"`
 	}
 
-	// Relationships ...
+	// Relationships palceholder type for master account.
 	Relationships struct {
 		MasterAccount `json:"master_account,omitempty"`
 	}
 
-	// MasterAccount ...
+	// MasterAccount respresents master accounts relationship data.
 	MasterAccount struct {
 		Data []RelationshipData `json:"data,omitempty"`
 	}
 
-	// RelationshipData ...
+	// RelationshipData respresents master account data.
 	RelationshipData struct {
 		ID   string `json:"id"`
 		Type string `json:"type,omitempty"`
 	}
 )
 
-// UnmarshallToAccount parses JSON response to account type.
-func UnmarshallToAccount(accountJSONResponse []byte) (Account, error) {
+// UnmarshallToAccount parses JSON to account type.
+func UnmarshallToAccount(accountJSON []byte) (Account, error) {
 	var account Account
-	err := json.Unmarshal(accountJSONResponse, &account)
-	if err != nil {
+	if v, err := validation.ValidateAccount(accountJSON); !v || err != nil {
 		return account, err
 	}
 
-	if v, err := validateAccount(account); !v || err != nil {
+	err := json.Unmarshal(accountJSON, &account)
+	if err != nil {
 		return account, err
 	}
 
 	return account, nil
 }
 
-func validateAccount(account Account) (bool, error) {
-	schema := gojsonschema.NewStringLoader(validation.AccountSchema)
-	loader := gojsonschema.NewGoLoader(account)
-
-	result, err := gojsonschema.Validate(schema, loader)
+// MarshallToAccount marshalls account to JSON.
+func MarshallToAccount(account Account) ([]byte, error) {
+	var accountJSON []byte
+	accountJSON, err := json.Marshal(account)
 	if err != nil {
-		return false, err
-	}
-	if !result.Valid() {
-		var errorMessage string
-		for _, e := range result.Errors() {
-			errorMessage = errorMessage + ", " + e.String()
-		}
-		return false, fmt.Errorf("Validate account:  %v", errorMessage)
+		return nil, err
 	}
 
-	return true, nil
+	if v, err := validation.ValidateCreateAccount(accountJSON); !v || err != nil {
+		return nil, err
+	}
+
+	return accountJSON, nil
 }

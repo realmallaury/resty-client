@@ -1,5 +1,56 @@
 package validation
 
+// AddAccountSchema https://stackoverflow.com/questions/46649066/jsonschema-validation-of-properties-required-and-or-conditionally-required
+var AddAccountSchema = string(`
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"data": {
+			"type": "object",
+			"properties": {
+				"bank_id": {
+					"type": "string",
+					"pattern": "^[A-Z0-9]{0,16}$"
+				},
+				"bank_id_code": {
+					"type": "string",
+					"pattern": "^[A-Z]{0,16}$"
+				},
+				"base_currency": {
+					"type": "string",
+					"pattern": "^[A-Z]{3}$"
+				},
+				"bic": {
+					"type": "string",
+					"pattern": "^([A-Z]{6}[A-Z0-9]{2}|[A-Z]{6}[A-Z0-9]{5})$"
+				},
+				"country": {
+					"type": "string",
+					"enum": ["GB", "AU"]
+				}
+			},
+			"if": {
+				"properties": {
+					"country": {
+						"enum": ["GB"]
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"bank_id_code": {
+						"value": {"text":"comment text"}
+					}
+				},
+				"required": ["bic"]
+			}
+		}
+	},
+	"required": ["data"]
+}
+`)
+
 // AccountSchema is a schema that represents api account response.
 var AccountSchema = string(`
 {
