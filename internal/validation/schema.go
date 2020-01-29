@@ -9,41 +9,96 @@ var AddAccountSchema = string(`
 		"data": {
 			"type": "object",
 			"properties": {
-				"bank_id": {
-					"type": "string",
-					"pattern": "^[A-Z0-9]{0,16}$"
-				},
-				"bank_id_code": {
-					"type": "string",
-					"pattern": "^[A-Z]{0,16}$"
-				},
-				"base_currency": {
-					"type": "string",
-					"pattern": "^[A-Z]{3}$"
-				},
-				"bic": {
-					"type": "string",
-					"pattern": "^([A-Z]{6}[A-Z0-9]{2}|[A-Z]{6}[A-Z0-9]{5})$"
-				},
-				"country": {
-					"type": "string",
-					"enum": ["GB", "AU"]
+				"attributes": {
+					"type": "object",
+					"properties": {
+						"bank_id": {
+							"type": "string",
+							"pattern": "^[A-Z0-9]{0,16}$"
+						},
+						"bank_id_code": {
+							"type": "string",
+							"pattern": "^[A-Z]{0,16}$"
+						},
+						"base_currency": {
+							"type": "string",
+							"pattern": "^[A-Z]{3}$"
+						},
+						"bic": {
+							"type": "string",
+							"pattern": "^([A-Z]{6}[A-Z0-9]{2}|[A-Z]{6}[A-Z0-9]{5})$"
+						},
+						"country": {
+							"type": "string",
+							"pattern": "^[A-Z]{2}$"
+						}
+					},
+					"anyOf": [{
+							"properties": {
+								"country": {
+									"const": "GB"
+								}
+							},
+							"required": ["bic", "bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "AU"
+								}
+							},
+							"required": ["bic","bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "BE"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "CA"
+								}
+							},
+							"required": ["bic"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "FR"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "DE"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "GR"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "HK"
+								}
+							},
+							"required": ["bic"]
+						}
+					]
 				}
-			},
-			"if": {
-				"properties": {
-					"country": {
-						"enum": ["GB"]
-					}
-				}
-			},
-			"then": {
-				"properties": {
-					"bank_id_code": {
-						"value": {"text":"comment text"}
-					}
-				},
-				"required": ["bic"]
 			}
 		}
 	},

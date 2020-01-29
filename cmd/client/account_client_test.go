@@ -11,11 +11,11 @@ import (
 func TestNew(t *testing.T) {
 	assert := assert.New(t)
 
-	accountRestClient, err := New("http://localhost:8080")
+	accountRestClient, err := New("http://test")
 	assert.Nil(err, "Error should be nil")
 	assert.NotNil(accountRestClient, "accountRestClient should not be nil")
 
-	accountRestClient, err = New("http:localhost:8080")
+	accountRestClient, err = New("http:test")
 	assert.Error(err, "New(...) should return error")
 	assert.Nil(accountRestClient, "accountRestClient should be nil")
 }

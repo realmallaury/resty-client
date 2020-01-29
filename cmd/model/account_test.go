@@ -32,8 +32,10 @@ func getTestCreateAccount() Account {
 	return Account{
 		Data: Data{
 			Attributes: Attributes{
-				Country: "GB",
-				Bic:     "NWBKGB22",
+				Country:    "GB",
+				Bic:        "NWBKGB22",
+				BankIDCode: "GBDSC",
+				BankID:     "400300",
 			},
 		},
 	}
