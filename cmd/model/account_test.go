@@ -31,6 +31,10 @@ func TestMarshallToAccount(t *testing.T) {
 func getTestCreateAccount() Account {
 	return Account{
 		Data: Data{
+			ID:             "ad27e265-9605-4b4b-a0e5-3003ea9cc4dc",
+			OrganisationID: "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+			Type:           "accounts",
+			Version:        0,
 			Attributes: Attributes{
 				Country:    "GB",
 				Bic:        "NWBKGB22",

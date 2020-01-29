@@ -1,6 +1,6 @@
 package validation
 
-// AddAccountSchema https://stackoverflow.com/questions/46649066/jsonschema-validation-of-properties-required-and-or-conditionally-required
+// AddAccountSchema ...
 var AddAccountSchema = string(`
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
@@ -37,6 +37,9 @@ var AddAccountSchema = string(`
 							"properties": {
 								"country": {
 									"const": "GB"
+								},
+								"bank_id_code": {
+									"const": "GBDSC"
 								}
 							},
 							"required": ["bic", "bank_id", "bank_id_code"]
@@ -45,6 +48,9 @@ var AddAccountSchema = string(`
 							"properties": {
 								"country": {
 									"const": "AU"
+								},
+								"bank_id_code": {
+									"const": "AUBSB"
 								}
 							},
 							"required": ["bic","bank_id_code"]
@@ -52,6 +58,9 @@ var AddAccountSchema = string(`
 						{
 							"properties": {
 								"country": {
+									"const": "BE"
+								},
+								"bank_id_code": {
 									"const": "BE"
 								}
 							},
@@ -61,6 +70,9 @@ var AddAccountSchema = string(`
 							"properties": {
 								"country": {
 									"const": "CA"
+								},
+								"bank_id_code": {
+									"const": "CACPA"
 								}
 							},
 							"required": ["bic"]
@@ -68,6 +80,9 @@ var AddAccountSchema = string(`
 						{
 							"properties": {
 								"country": {
+									"const": "FR"
+								},
+								"bank_id_code": {
 									"const": "FR"
 								}
 							},
@@ -77,6 +92,9 @@ var AddAccountSchema = string(`
 							"properties": {
 								"country": {
 									"const": "DE"
+								},
+								"bank_id_code": {
+									"const": "DEBLZ"
 								}
 							},
 							"required": ["bank_id", "bank_id_code"]
@@ -85,6 +103,9 @@ var AddAccountSchema = string(`
 							"properties": {
 								"country": {
 									"const": "GR"
+								},
+								"bank_id_code": {
+									"const": "GRBIC"
 								}
 							},
 							"required": ["bank_id", "bank_id_code"]
@@ -93,9 +114,97 @@ var AddAccountSchema = string(`
 							"properties": {
 								"country": {
 									"const": "HK"
+								},
+								"bank_id_code": {
+									"const": "HKNCC"
 								}
 							},
 							"required": ["bic"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "IT"
+								},
+								"bank_id_code": {
+									"const": "ITNCC"
+								}
+							},
+							"required": ["bank_id"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "LU"
+								},
+								"bank_id_code": {
+									"const": "LULUX"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "NL"
+								}
+							},
+							"required": ["bic"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "PL"
+								},
+								"bank_id_code": {
+									"const": "PLKNR"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "PT"
+								},
+								"bank_id_code": {
+									"const": "PTNCC"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "ES"
+								},
+								"bank_id_code": {
+									"const": "ESNCC"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "CH"
+								},
+								"bank_id_code": {
+									"const": "CHBCC"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "US"
+								},
+								"bank_id_code": {
+									"const": "USABA"
+								}
+							},
+							"required": ["bic", "bank_id", "bank_id_code"]
 						}
 					]
 				}
@@ -146,8 +255,8 @@ var AccountSchema = string(`
 							"pattern": "^[A-Z0-9]{0,64}$"
 						},
 						"alternative_bank_account_names": {
-							"type": "array",
-   							"contains": {
+							"type": [ "array", "null" ],
+							"contains": {
 								"type": "string",
 								"minLength": 1,
 								"maxLength": 140
@@ -219,7 +328,7 @@ var AccountSchema = string(`
 								},
 								"registration_number": {
 									"type": "string"
-								},			
+								},
 								"representative": {
 									"type": "object",
 									"properties": {
@@ -251,49 +360,12 @@ var AccountSchema = string(`
 									"minLength": 1,
 									"maxLength": 140
 								},
-								"city": {
-									"type": "string",
-									"minLength": 1,
-									"maxLength": 35
-								},
-								"country": {
-									"type": "string",
-									"pattern": "^[A-Z]{2}$"
-								},
-								"document_number": {
-									"type": "string"
-								},
-								"first_name": {
-									"type": "string",
-									"minLength": 1,
-									"maxLength": 40
-								},
-								"last_name": {
-									"type": "string",
-									"minLength": 1,
-									"maxLength": 40 
-								},
-								"title": {
-									"type": "string",
-									"minLength": 1,
-									"maxLength": 40
-								}
-							}
-						},
-						"private_identification": {
-							"type": "object",
-							"properties": {
-								"address": {
-									"type": "string",
-									"minLength": 1,
-									"maxLength": 140
-								},
 								"birth_country": {
 									"type": "string",
 									"pattern": "^[A-Z]{2}$"
 								},
-      							"birth_date": {
-									"type": "string",  
+								"birth_date": {
+									"type": "string",
 									"format": "date"
 								},
 								"city": {
@@ -309,17 +381,17 @@ var AccountSchema = string(`
 									"type": "string"
 								},
 								"first_name": {
-									"type": "string", 
+									"type": "string",
 									"minLength": 1,
 									"maxLength": 40
 								},
 								"last_name": {
-									"type": "string", 
+									"type": "string",
 									"minLength": 1,
 									"maxLength": 40
 								},
 								"title": {
-									"type": "string", 
+									"type": "string",
 									"minLength": 1,
 									"maxLength": 40
 								}
@@ -339,7 +411,180 @@ var AccountSchema = string(`
 							"maxLength": 40
 						}
 					},
-					"required": ["country"]		
+					"anyOf": [{
+							"properties": {
+								"country": {
+									"const": "GB"
+								},
+								"bank_id_code": {
+									"const": "GBDSC"
+								}
+							},
+							"required": ["bic", "bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "AU"
+								},
+								"bank_id_code": {
+									"const": "AUBSB"
+								}
+							},
+							"required": ["bic", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "BE"
+								},
+								"bank_id_code": {
+									"const": "BE"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "CA"
+								},
+								"bank_id_code": {
+									"const": "CACPA"
+								}
+							},
+							"required": ["bic"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "FR"
+								},
+								"bank_id_code": {
+									"const": "FR"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "DE"
+								},
+								"bank_id_code": {
+									"const": "DEBLZ"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "GR"
+								},
+								"bank_id_code": {
+									"const": "GRBIC"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "HK"
+								},
+								"bank_id_code": {
+									"const": "HKNCC"
+								}
+							},
+							"required": ["bic"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "IT"
+								},
+								"bank_id_code": {
+									"const": "ITNCC"
+								}
+							},
+							"required": ["bank_id"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "LU"
+								},
+								"bank_id_code": {
+									"const": "LULUX"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "NL"
+								}
+							},
+							"required": ["bic"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "PL"
+								},
+								"bank_id_code": {
+									"const": "PLKNR"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "PT"
+								},
+								"bank_id_code": {
+									"const": "PTNCC"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "ES"
+								},
+								"bank_id_code": {
+									"const": "ESNCC"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "CH"
+								},
+								"bank_id_code": {
+									"const": "CHBCC"
+								}
+							},
+							"required": ["bank_id", "bank_id_code"]
+						},
+						{
+							"properties": {
+								"country": {
+									"const": "US"
+								},
+								"bank_id_code": {
+									"const": "USABA"
+								}
+							},
+							"required": ["bic", "bank_id", "bank_id_code"]
+						}
+					]
 				},
 				"relationships": {
 					"type": "object",
@@ -360,7 +605,7 @@ var AccountSchema = string(`
 												"type": "string"
 											}
 										}
-									}	
+									}
 								}
 							}
 						}

@@ -55,7 +55,7 @@ func ValidateUUID(UUID string) (bool, error) {
 
 // ValidateCreateAccount validates account data for creation.
 func ValidateCreateAccount(accountJSON []byte) (bool, error) {
-	schema := gojsonschema.NewStringLoader(AddAccountSchema)
+	schema := gojsonschema.NewStringLoader(AccountSchema)
 	loader := gojsonschema.NewBytesLoader(accountJSON)
 
 	return validate(schema, loader)
