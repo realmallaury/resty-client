@@ -5,6 +5,7 @@ import (
 	"os"
 
 	resty "github.com/go-resty/resty/v2"
+	"github.com/push-er/resty-client/cmd/model"
 	"github.com/push-er/resty-client/internal/validation"
 )
 
@@ -37,9 +38,10 @@ func New(hostURL string) (*AccountRestClient, error) {
 
 // Fetch gets accound data for provided account id.
 // If account id is not valid UUID or account is not found it returns error.
-func (r *AccountRestClient) Fetch(accountID string) (*resty.Response, error) {
+func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
+	var account model.Account
 	if v, err := validation.ValidateUUID(accountID); !v || err != nil {
-		return nil, err
+		return account, err
 	}
 
 	resp, err := r.Client.R().
@@ -49,7 +51,13 @@ func (r *AccountRestClient) Fetch(accountID string) (*resty.Response, error) {
 		Get(FetchAccountEndpoint)
 	if err != nil {
 		r.Logger.Printf("Error fetching account: %v", err)
+		return account, err
 	}
 
-	return resp, err
+	account, err = model.UnmarshallToAccount(resp.Body())
+	if err != nil {
+		r.Logger.Printf("Error parsing get account response: %v", err)
+	}
+
+	return account, err
 }

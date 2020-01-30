@@ -2,7 +2,6 @@ package model
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/push-er/resty-client/internal/validation"
 )
@@ -110,14 +109,12 @@ func UnmarshallToAccount(accountJSON []byte) (Account, error) {
 }
 
 // MarshallToAccount marshalls account to JSON.
-func MarshallToAccount(account Account) ([]byte, error) {
+func MarshallToAccount(account *Account) ([]byte, error) {
 	var accountJSON []byte
 	accountJSON, err := json.Marshal(account)
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(string(accountJSON))
 
 	if v, err := validation.ValidateCreateAccount(accountJSON); !v || err != nil {
 		return nil, err

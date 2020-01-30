@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/jarcoal/httpmock"
-	"github.com/push-er/resty-client/internal/utils"
+	"github.com/push-er/resty-client/cmd/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,17 +29,16 @@ func TestFetch(t *testing.T) {
 	httpmock.RegisterResponder(
 		"GET",
 		`/v1/organisation/accounts/ad27e265-9605-4b4b-a0e5-3003ea9cc4dc`,
-		httpmock.NewStringResponder(200, utils.AccountResponseJSON),
+		httpmock.NewStringResponder(200, model.AccountResponseJSON),
 	)
 
 	accountRestClient, err := New("http://test")
 	httpmock.ActivateNonDefault(accountRestClient.Client.GetClient())
 
-	res, err := accountRestClient.Fetch("test")
+	_, err = accountRestClient.Fetch("test")
 	assert.Error(err, "Fetch(...) should return error")
-	assert.Nil(res, "res should be nil")
 
-	res, err = accountRestClient.Fetch("ad27e265-9605-4b4b-a0e5-3003ea9cc4dc")
+	acc, err := accountRestClient.Fetch("ad27e265-9605-4b4b-a0e5-3003ea9cc4dc")
 	assert.Nil(err, "Error should be nil")
-	assert.EqualValues(utils.AccountResponseJSON, string(res.Body()), "Response should be same")
+	assert.EqualValues(model.GetTestAccount(), acc, "Response should be same")
 }

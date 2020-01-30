@@ -14,10 +14,9 @@ func main() {
 		logger.Fatalf("Cannot initialize rest client: %v", err)
 	}
 
-	rsp, err := accountRestClient.Fetch("test")
+	acc, err := accountRestClient.Fetch("ad27e265-9605-4b4b-a0e5-3003ea9cc4dc")
 	if err != nil {
 		logger.Fatalf("Cannot fetch account data: %v", err)
 	}
-	logger.Print(rsp)
-	logger.Print(rsp.Status())
+	logger.Print(acc)
 }

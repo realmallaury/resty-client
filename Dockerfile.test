@@ -9,4 +9,4 @@ RUN set -ex; \
 WORKDIR /go/src/github.com/push-er/resty-client/
 
 # Run tests
-CMD CGO_ENABLED=0 go test ./...tags=integration
+CMD CGO_ENABLED=0 go test ./... -tags=integration
