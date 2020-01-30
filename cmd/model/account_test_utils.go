@@ -18,6 +18,24 @@ func GetTestCreateAccount() Account {
 	}
 }
 
+// GetMissingTestCreateAccount returns test account for creation.
+func GetMissingTestCreateAccount() Account {
+	return Account{
+		Data: Data{
+			ID:             "ad27e265-9605-4b4b-a0e5-3003ea9cc4dc",
+			OrganisationID: "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+			Type:           "accounts",
+			Version:        0,
+			Attributes: Attributes{
+				Country:    "GB",
+				Bic:        "NWBKGB22",
+				BankIDCode: "GBDSCR",
+				BankID:     "400300",
+			},
+		},
+	}
+}
+
 // GetTestAccount returns test account model.
 func GetTestAccount() Account {
 	return Account{
@@ -81,9 +99,34 @@ func GetTestAccount() Account {
 	}
 }
 
+// CreateAccountRequestJSON represents account api create resquest.
+const CreateAccountRequestJSON = `{
+	"data": {
+		"id": "ad27e265-9605-4b4b-a0e5-3003ea9cc4dc",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0,
+		"attributes": {
+			"account_matching_opt_out": false,
+			"joint_account": false,
+			"alternative_bank_account_names": null,
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"organisation_identification": {
+				"representative": {}
+			},
+			"private_identification": {}
+		},
+		"relationships": {
+			"master_account": {}
+		}
+	}
+}`
+
 // AccountResponseJSON represents account api fetch response.
-const AccountResponseJSON = `
-{
+const AccountResponseJSON = `{
 	"data": {
 		"type": "accounts",
 		"id": "ad27e265-9605-4b4b-a0e5-3003ea9cc4dc",

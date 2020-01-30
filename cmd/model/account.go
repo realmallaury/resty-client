@@ -17,7 +17,7 @@ type (
 		ID             string `json:"id"`
 		OrganisationID string `json:"organisation_id"`
 		Type           string `json:"type,omitempty"`
-		Version        int    `json:"version,omitempty"`
+		Version        int    `json:"version"`
 		Attributes     `json:"attributes"`
 		Relationships  `json:"relationships"`
 	}
@@ -25,7 +25,7 @@ type (
 	// Attributes represents specific account data.
 	Attributes struct {
 		AccountClassification       string   `json:"account_classification,omitempty"`
-		AccountMatchingOptOut       bool     `json:"account_matching_opt_out,omitempty"`
+		AccountMatchingOptOut       bool     `json:"account_matching_opt_out"`
 		AccountNumber               string   `json:"account_number,omitempty"`
 		AlternativeBankAccountNames []string `json:"alternative_bank_account_names"`
 		BankAccountName             string   `json:"bank_account_name,omitempty"`
@@ -37,7 +37,7 @@ type (
 		CustomerID                  string   `json:"customer_id,omitempty"`
 		FirstName                   string   `json:"first_name,omitempty"`
 		Iban                        string   `json:"iban,omitempty"`
-		JointAccount                bool     `json:"joint_account,omitempty"`
+		JointAccount                bool     `json:"joint_account"`
 		OrganisationIdentification  `json:"organisation_identification,omitempty"`
 		PrivateIdentification       `json:"private_identification,omitempty"`
 		SecondaryIdentification     string `json:"secondary_identification,omitempty"`
