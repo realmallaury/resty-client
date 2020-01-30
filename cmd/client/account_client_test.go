@@ -33,6 +33,7 @@ func TestFetch(t *testing.T) {
 	)
 
 	accountRestClient, err := New("http://test")
+	assert.Nil(err, "Error should be nil")
 	httpmock.ActivateNonDefault(accountRestClient.Client.GetClient())
 
 	_, err = accountRestClient.Fetch("test")
@@ -41,4 +42,31 @@ func TestFetch(t *testing.T) {
 	acc, err := accountRestClient.Fetch("ad27e265-9605-4b4b-a0e5-3003ea9cc4dc")
 	assert.Nil(err, "Error should be nil")
 	assert.EqualValues(model.GetTestAccount(), acc, "Response should be same")
+}
+
+func TestCreate(t *testing.T) {
+	assert := assert.New(t)
+
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	httpmock.RegisterResponder(
+		"POST",
+		`/v1/organisation/accounts`,
+		httpmock.NewStringResponder(200, model.AccountCreatedResponseJSON),
+	)
+
+	accountRestClient, err := New("http://test")
+	assert.Nil(err, "Error should be nil")
+	httpmock.ActivateNonDefault(accountRestClient.Client.GetClient())
+
+	_, err = accountRestClient.Create(model.Account{})
+	assert.Error(err, "Creaate(...) should return error")
+
+	account := model.GetTestCreateAccount()
+	expectedAccount := model.GetTestCreatedAccount()
+	createdAccount, err := accountRestClient.Create(account)
+
+	assert.Nil(err, "Error should be nil")
+	assert.EqualValues(expectedAccount, createdAccount, "Response should be same")
 }

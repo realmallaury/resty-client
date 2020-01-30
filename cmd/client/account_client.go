@@ -5,12 +5,16 @@ import (
 	"os"
 
 	resty "github.com/go-resty/resty/v2"
+
 	"github.com/push-er/resty-client/cmd/model"
 	"github.com/push-er/resty-client/internal/validation"
 )
 
-// FetchAccountEndpoint is path resource for account
+// FetchAccountEndpoint is path resource for getting account
 const FetchAccountEndpoint = "/v1/organisation/accounts/{account_id}"
+
+// CreateAccountEndpoint is path resource for creating account
+const CreateAccountEndpoint = "/v1/organisation/accounts"
 
 // AccountRestClient represent account rest client
 type AccountRestClient struct {
@@ -59,5 +63,32 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 		r.Logger.Printf("Error parsing get account response: %v", err)
 	}
 
-	return account, err
+	return account, nil
+}
+
+// Create creates new account.
+// If account data is not valid or account there is error while creating account it returns error.
+func (r *AccountRestClient) Create(account model.Account) (model.Account, error) {
+	accountJSON, err := model.MarshallToAccount(&account)
+	if err != nil {
+		r.Logger.Printf("Error marshalling account to JSON: %v", err)
+		return account, err
+	}
+
+	resp, err := r.Client.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(accountJSON).
+		SetResult(&account).
+		Post(CreateAccountEndpoint)
+	if err != nil {
+		r.Logger.Printf("Error fetching account: %v", err)
+		return account, err
+	}
+
+	account, err = model.UnmarshallToAccount(resp.Body())
+	if err != nil {
+		r.Logger.Printf("Error parsing create account response: %v", err)
+	}
+
+	return account, nil
 }

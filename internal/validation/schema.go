@@ -226,11 +226,11 @@ var AccountSchema = string(`
 			"properties": {
 				"id": {
 					"type": "string",
-					"format": "uuid"
+					"pattern": "([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}"
 				},
 				"organisation_id": {
 					"type": "string",
-					"format": "uuid"
+					"pattern": "([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}"
 				},
 				"type": {
 					"type": "string",
@@ -599,7 +599,7 @@ var AccountSchema = string(`
 										"properties": {
 											"id": {
 												"type": "string",
-												"format": "uuid"
+												"pattern": "([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}"
 											},
 											"type": {
 												"type": "string"

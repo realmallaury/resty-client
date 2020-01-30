@@ -18,7 +18,7 @@ func GetTestCreateAccount() Account {
 	}
 }
 
-// GetMissingTestCreateAccount returns test account for creation.
+// GetMissingTestCreateAccount returns test account for creation with missing data.
 func GetMissingTestCreateAccount() Account {
 	return Account{
 		Data: Data{
@@ -27,10 +27,38 @@ func GetMissingTestCreateAccount() Account {
 			Type:           "accounts",
 			Version:        0,
 			Attributes: Attributes{
-				Country:    "GB",
-				Bic:        "NWBKGB22",
-				BankIDCode: "GBDSCR",
-				BankID:     "400300",
+				Country: "GB",
+				Bic:     "NWBKGB22",
+				BankID:  "400300",
+			},
+		},
+	}
+}
+
+// GetTestCreatedAccount returns created test account.
+func GetTestCreatedAccount() Account {
+	return Account{
+		Data: Data{
+			ID:             "ad27e265-9605-4b4b-a0e5-3003ea9cc4dc",
+			OrganisationID: "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+			Type:           "accounts",
+			Version:        0,
+			Attributes: Attributes{
+				Country:                     "GB",
+				BaseCurrency:                "GBP",
+				AccountNumber:               "41426819",
+				Bic:                         "NWBKGB22",
+				BankIDCode:                  "GBDSC",
+				BankID:                      "400300",
+				AccountClassification:       "Personal",
+				Iban:                        "GB11NWBK40030041426819",
+				Title:                       "Ms",
+				FirstName:                   "Samantha",
+				BankAccountName:             "Samantha Holder",
+				AlternativeBankAccountNames: []string{"Sam Holder"},
+				JointAccount:                false,
+				AccountMatchingOptOut:       false,
+				SecondaryIdentification:     "A1B2C3D4",
 			},
 		},
 	}
@@ -124,6 +152,36 @@ const CreateAccountRequestJSON = `{
 		}
 	}
 }`
+
+// AccountCreatedResponseJSON represents account api create response.
+const AccountCreatedResponseJSON = `{
+	"data": {
+	  "type": "accounts",
+	  "id": "ad27e265-9605-4b4b-a0e5-3003ea9cc4dc",
+	  "version": 0,
+	  "organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+	  "attributes": {
+		"country": "GB",
+		"base_currency": "GBP",
+		"account_number": "41426819",
+		"bank_id": "400300",
+		"bank_id_code": "GBDSC",
+		"bic": "NWBKGB22",
+		"iban": "GB11NWBK40030041426819",
+		"title": "Ms",
+		"first_name": "Samantha",
+		"bank_account_name": "Samantha Holder",
+		"alternative_bank_account_names": [
+		  "Sam Holder"
+		],
+		"account_classification": "Personal",
+		"joint_account": false,
+		"account_matching_opt_out": false,
+		"secondary_identification": "A1B2C3D4",
+		"status": "confirmed"
+	  }
+	}
+  }`
 
 // AccountResponseJSON represents account api fetch response.
 const AccountResponseJSON = `{

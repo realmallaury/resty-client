@@ -116,7 +116,7 @@ func MarshallToAccount(account *Account) ([]byte, error) {
 		return nil, err
 	}
 
-	if v, err := validation.ValidateCreateAccount(accountJSON); !v || err != nil {
+	if v, err := validation.ValidateAccount(accountJSON); !v || err != nil {
 		return nil, err
 	}
 
