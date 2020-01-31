@@ -1,6 +1,8 @@
 package client
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 
@@ -71,7 +73,7 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 func (r *AccountRestClient) Create(account model.Account) (model.Account, error) {
 	accountJSON, err := model.MarshallToAccount(&account)
 	if err != nil {
-		r.Logger.Printf("Error marshalling account to JSON: %v", err)
+		r.Logger.Printf("Error marshalling account: %+v to JSON: %v", account, err)
 		return account, err
 	}
 
@@ -82,6 +84,16 @@ func (r *AccountRestClient) Create(account model.Account) (model.Account, error)
 		Post(CreateAccountEndpoint)
 	if err != nil {
 		r.Logger.Printf("Error fetching account: %v", err)
+		return account, err
+	}
+
+	fmt.Println(string(accountJSON))
+	fmt.Println(string(resp.Body()))
+
+	created := make(map[string]interface{})
+	err = json.Unmarshal(resp.Body(), &created)
+	if err != nil {
+		r.Logger.Printf("Error parsing account creted response: %v", err)
 		return account, err
 	}
 

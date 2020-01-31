@@ -28,7 +28,7 @@ func TestFetch(t *testing.T) {
 
 	httpmock.RegisterResponder(
 		"GET",
-		`/v1/organisation/accounts/ad27e265-9605-4b4b-a0e5-3003ea9cc4dc`,
+		`/v1/organisation/accounts/cd27e265-9605-4b4b-a0e5-3003ea9cc4dc`,
 		httpmock.NewStringResponder(200, model.AccountResponseJSON),
 	)
 
@@ -39,9 +39,36 @@ func TestFetch(t *testing.T) {
 	_, err = accountRestClient.Fetch("test")
 	assert.Error(err, "Fetch(...) should return error")
 
-	acc, err := accountRestClient.Fetch("ad27e265-9605-4b4b-a0e5-3003ea9cc4dc")
+	acc, err := accountRestClient.Fetch("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc")
 	assert.Nil(err, "Error should be nil")
 	assert.EqualValues(model.GetTestAccount(), acc, "Response should be same")
+}
+
+func TestCreateBadAccountData(t *testing.T) {
+	assert := assert.New(t)
+
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	httpmock.RegisterResponder(
+		"POST",
+		`/v1/organisation/accounts`,
+		httpmock.NewStringResponder(200, model.AccountResponseJSON),
+	)
+
+	httpmock.RegisterResponder(
+		"GET",
+		`/v1/organisation/accounts/cd27e265-9605-4b4b-a0e5-3003ea9cc4dc`,
+		httpmock.NewStringResponder(200, model.AccountResponseJSON),
+	)
+
+	accountRestClient, err := New("http://test")
+	assert.Nil(err, "Error should be nil")
+	httpmock.ActivateNonDefault(accountRestClient.Client.GetClient())
+
+	account := model.GetMissingTestCreateAccount()
+	_, err = accountRestClient.Create(account)
+	assert.Error(err, "Creaate(...) should return error")
 }
 
 func TestCreate(t *testing.T) {
@@ -53,18 +80,15 @@ func TestCreate(t *testing.T) {
 	httpmock.RegisterResponder(
 		"POST",
 		`/v1/organisation/accounts`,
-		httpmock.NewStringResponder(200, model.AccountCreatedResponseJSON),
+		httpmock.NewStringResponder(200, model.AccountResponseJSON),
 	)
 
 	accountRestClient, err := New("http://test")
 	assert.Nil(err, "Error should be nil")
 	httpmock.ActivateNonDefault(accountRestClient.Client.GetClient())
 
-	_, err = accountRestClient.Create(model.Account{})
-	assert.Error(err, "Creaate(...) should return error")
-
 	account := model.GetTestCreateAccount()
-	expectedAccount := model.GetTestCreatedAccount()
+	expectedAccount := model.GetTestAccount()
 	createdAccount, err := accountRestClient.Create(account)
 
 	assert.Nil(err, "Error should be nil")

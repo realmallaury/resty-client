@@ -71,7 +71,7 @@ func validate(schema, loader gojsonschema.JSONLoader) (bool, error) {
 		for _, e := range result.Errors() {
 			errorMessage = errorMessage + " " + e.String() + "\n"
 		}
-		return false, fmt.Errorf("Validation - %v", errorMessage)
+		return false, fmt.Errorf("%v", errorMessage)
 	}
 
 	return true, nil

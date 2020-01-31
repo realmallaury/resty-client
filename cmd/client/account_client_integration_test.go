@@ -20,17 +20,25 @@ func TestFetchIntegration(t *testing.T) {
 	assert.Error(err, "Fetch(...) should return error")
 }
 
+func TestCreateBadAccountDataIntegration(t *testing.T) {
+	assert := assert.New(t)
+
+	accountRestClient, err := New("http://localhost:8080")
+	assert.Nil(err, "Error should be nil")
+
+	account := model.GetMissingTestCreateAccount()
+	_, err = accountRestClient.Create(account)
+	assert.Error(err, "Create(...) should return error")
+}
+
 func TestCreateIntegration(t *testing.T) {
 	assert := assert.New(t)
 
 	accountRestClient, err := New("http://localhost:8080")
 	assert.Nil(err, "Error should be nil")
 
-	_, err = accountRestClient.Create(model.Account{})
-	assert.Error(err, "Create(...) should return error")
-
 	account := model.GetTestCreateAccount()
-	expectedAccount := model.GetTestCreatedAccount()
+	expectedAccount := model.GetTestAccount()
 	createdAccount, err := accountRestClient.Create(account)
 
 	assert.Nil(err, "Error should be nil")

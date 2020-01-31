@@ -21,17 +21,16 @@ func TestUnmarshallToAccount(t *testing.T) {
 func TestMarshallToAccount(t *testing.T) {
 	assert := assert.New(t)
 
-	acc := GetTestCreateAccount()
+	acc := GetMissingTestCreateAccount()
 	accountJSON, err := MarshallToAccount(&acc)
 
-	assert.Nil(err, "Error should be nil")
-	assert.True(compareJSON(accountJSON, []byte(CreateAccountRequestJSON)), "Account should be correctely unmarshalled")
+	assert.Error(err, "MarshallToAccount(...) should return error")
 
-	acc = GetTestAccount()
+	acc = GetTestCreateAccount()
 	accountJSON, err = MarshallToAccount(&acc)
 
 	assert.Nil(err, "Error should be nil")
-	assert.True(compareJSON(accountJSON, []byte(AccountResponseJSON)), "Account should be correctely unmarshalled")
+	assert.True(compareJSON(accountJSON, []byte(AccountRequestJSON)), "Account should be correctely unmarshalled")
 }
 
 func compareJSON(result, expected []byte) bool {
