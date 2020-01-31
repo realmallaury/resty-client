@@ -31,4 +31,9 @@ func main() {
 	}
 
 	fmt.Printf("Account:\n %+v\n\n", account)
+
+	err = accountRestClient.Delete("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc", 0)
+	if err != nil {
+		logger.Fatalf("Cannot delete account: %v", err)
+	}
 }

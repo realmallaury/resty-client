@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	resty "github.com/go-resty/resty/v2"
 
@@ -17,6 +18,9 @@ const FetchAccountEndpoint = "/v1/organisation/accounts/{account_id}"
 
 // CreateAccountEndpoint is path resource for creating account
 const CreateAccountEndpoint = "/v1/organisation/accounts"
+
+// DeleteAccountEndpoint is path resource for deleting account
+const DeleteAccountEndpoint = "/v1/organisation/accounts/{account_id}?version={version}"
 
 // AccountRestClient represent account rest client
 type AccountRestClient struct {
@@ -103,4 +107,28 @@ func (r *AccountRestClient) Create(account model.Account) (model.Account, error)
 	}
 
 	return account, nil
+}
+
+// Delete deletes existing account.
+// If account id is not valid UUID or account is not found it returns error.
+func (r *AccountRestClient) Delete(accountID string, version int) error {
+	if v, err := validation.ValidateUUID(accountID); !v || err != nil {
+		return err
+	}
+
+	resp, err := r.Client.R().
+		SetPathParams(map[string]string{
+			"account_id": accountID,
+			"version":    strconv.Itoa(version),
+		}).
+		Delete(DeleteAccountEndpoint)
+	if err != nil {
+		r.Logger.Printf("Error deleting account: %v", err)
+		return err
+	}
+	if resp.IsError() {
+		return fmt.Errorf("Error deleting account: %v", string(resp.Body()))
+	}
+
+	return nil
 }
