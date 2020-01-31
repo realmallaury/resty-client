@@ -50,18 +50,6 @@ func TestCreateBadAccountData(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	httpmock.RegisterResponder(
-		"POST",
-		`/v1/organisation/accounts`,
-		httpmock.NewStringResponder(200, model.AccountResponseJSON),
-	)
-
-	httpmock.RegisterResponder(
-		"GET",
-		`/v1/organisation/accounts/cd27e265-9605-4b4b-a0e5-3003ea9cc4dc`,
-		httpmock.NewStringResponder(200, model.AccountResponseJSON),
-	)
-
 	accountRestClient, err := New("http://test")
 	assert.Nil(err, "Error should be nil")
 	httpmock.ActivateNonDefault(accountRestClient.Client.GetClient())
