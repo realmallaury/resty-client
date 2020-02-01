@@ -5,18 +5,20 @@ import (
 	"log"
 	"os"
 
-	rc "github.com/push-er/resty-client/cmd/client"
+	"github.com/push-er/resty-client/cmd/client"
 	"github.com/push-er/resty-client/cmd/model"
 )
 
 func main() {
 	logger := log.New(os.Stdout, "Demo: ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
-	accountRestClient, err := rc.New("http://localhost:8080")
+
+	accountRestClient, err := client.New("http://localhost:8080")
 	if err != nil {
 		logger.Fatalf("Cannot initialize rest client: %v", err)
 	}
 
 	account := model.GetTestCreateAccount()
+
 	createdAccount, err := accountRestClient.Create(account)
 	if err != nil {
 		logger.Fatalf("Cannot create account: %v", err)

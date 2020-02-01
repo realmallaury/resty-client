@@ -7,7 +7,7 @@ import (
 )
 
 type (
-	// Account type represents palceholder type for account.
+	// Account type represents placeholder type for account.
 	Account struct {
 		Data `json:"data"`
 	}
@@ -76,7 +76,7 @@ type (
 		Title          string `json:"title,omitempty"`
 	}
 
-	// Relationships palceholder type for master account.
+	// Relationships placeholder type for master account.
 	Relationships struct {
 		MasterAccount `json:"master_account,omitempty"`
 	}
@@ -96,6 +96,7 @@ type (
 // UnmarshallToAccount parses JSON to account type.
 func UnmarshallToAccount(accountJSON []byte) (Account, error) {
 	var account Account
+
 	if v, err := validation.ValidateAccount(accountJSON); !v || err != nil {
 		return account, err
 	}
@@ -111,6 +112,7 @@ func UnmarshallToAccount(accountJSON []byte) (Account, error) {
 // MarshallToAccount marshalls account to JSON.
 func MarshallToAccount(account *Account) ([]byte, error) {
 	var accountJSON []byte
+
 	accountJSON, err := json.Marshal(account)
 	if err != nil {
 		return nil, err

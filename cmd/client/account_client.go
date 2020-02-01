@@ -28,7 +28,8 @@ type AccountRestClient struct {
 	Logger *log.Logger
 }
 
-// New returns new AccountRestClient instance. Host url should resolve to valid url otherwise error is returned.
+// New returns new AccountRestClient instance.
+// Host url should resolve to valid url otherwise error is returned.
 func New(hostURL string) (*AccountRestClient, error) {
 	logger := log.New(os.Stdout, "Rest client: ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
 	c := resty.New()
@@ -36,6 +37,7 @@ func New(hostURL string) (*AccountRestClient, error) {
 	if v, err := validation.ValidateURL(hostURL); !v || err != nil {
 		return nil, err
 	}
+
 	c.SetHostURL(hostURL)
 
 	rc := AccountRestClient{
@@ -50,6 +52,7 @@ func New(hostURL string) (*AccountRestClient, error) {
 // If account id is not valid UUID or account is not found it returns error.
 func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 	var account model.Account
+
 	if v, err := validation.ValidateUUID(accountID); !v || err != nil {
 		return account, err
 	}
@@ -60,13 +63,17 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 		}).
 		Get(FetchAccountEndpoint)
 	if err != nil {
-		r.Logger.Printf("Error fetching account: %v", err)
+		r.Logger.Printf("error fetching account: %v", err)
 		return account, err
+	}
+
+	if resp.IsError() {
+		return account, fmt.Errorf("error fetching account: %v", string(resp.Body()))
 	}
 
 	account, err = model.UnmarshallToAccount(resp.Body())
 	if err != nil {
-		r.Logger.Printf("Error parsing get account response: %v", err)
+		r.Logger.Printf("error parsing get account response: %v", err)
 	}
 
 	return account, nil
@@ -77,7 +84,7 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 func (r *AccountRestClient) Create(account model.Account) (model.Account, error) {
 	accountJSON, err := model.MarshallToAccount(&account)
 	if err != nil {
-		r.Logger.Printf("Error marshalling account: %+v to JSON: %v", account, err)
+		r.Logger.Printf("error marshalling account: %+v to JSON: %v", account, err)
 		return account, err
 	}
 
@@ -87,23 +94,25 @@ func (r *AccountRestClient) Create(account model.Account) (model.Account, error)
 		SetResult(&account).
 		Post(CreateAccountEndpoint)
 	if err != nil {
-		r.Logger.Printf("Error fetching account: %v", err)
+		r.Logger.Printf("error fetching account: %v", err)
 		return account, err
 	}
 
-	fmt.Println(string(accountJSON))
-	fmt.Println(string(resp.Body()))
-
 	created := make(map[string]interface{})
+
 	err = json.Unmarshal(resp.Body(), &created)
 	if err != nil {
-		r.Logger.Printf("Error parsing account creted response: %v", err)
+		r.Logger.Printf("error parsing account creted response: %v", err)
 		return account, err
 	}
 
 	account, err = model.UnmarshallToAccount(resp.Body())
 	if err != nil {
-		r.Logger.Printf("Error parsing create account response: %v", err)
+		r.Logger.Printf("error parsing create account response: %v", err)
+	}
+
+	if resp.IsError() {
+		return account, fmt.Errorf("error creating account: %v", string(resp.Body()))
 	}
 
 	return account, nil
@@ -126,8 +135,9 @@ func (r *AccountRestClient) Delete(accountID string, version int) error {
 		r.Logger.Printf("Error deleting account: %v", err)
 		return err
 	}
+
 	if resp.IsError() {
-		return fmt.Errorf("Error deleting account: %v", string(resp.Body()))
+		return fmt.Errorf("rror deleting account: %v", string(resp.Body()))
 	}
 
 	return nil

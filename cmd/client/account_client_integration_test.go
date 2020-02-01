@@ -44,3 +44,13 @@ func TestCreateIntegration(t *testing.T) {
 	assert.Nil(err, "Error should be nil")
 	assert.EqualValues(expectedAccount, createdAccount, "Response should be same")
 }
+
+func TestDeleteIntegration(t *testing.T) {
+	assert := assert.New(t)
+
+	accountRestClient, err := New("http://localhost:8080")
+	assert.Nil(err, "Error should be nil")
+
+	err = accountRestClient.Delete("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc", 0)
+	assert.Nil(err, "Error should be nil")
+}

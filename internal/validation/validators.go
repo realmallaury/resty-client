@@ -7,48 +7,27 @@ import (
 )
 
 // ValidateURL validates URL.
-func ValidateURL(URL string) (bool, error) {
-	url := struct {
+func ValidateURL(url string) (bool, error) {
+	urlJSON := struct {
 		URL string `json:"url"`
 	}{
-		URL: URL,
+		URL: url,
 	}
-	schema := gojsonschema.NewStringLoader(`
-	{
-		"$schema": "http://json-schema.org/draft-07/schema#",
-		"type": "object",
-		"properties": {
-			"url": { 
-				"type": "string", 
-				"format": "uri",
-    			"pattern": "^(http?|https?|)://"
-			}
-		}
-	}`)
-	loader := gojsonschema.NewGoLoader(url)
+	schema := gojsonschema.NewStringLoader(URLSchema)
+	loader := gojsonschema.NewGoLoader(urlJSON)
 
 	return validate(schema, loader)
 }
 
 // ValidateUUID validates uuid.
-func ValidateUUID(UUID string) (bool, error) {
-	uuid := struct {
+func ValidateUUID(uuid string) (bool, error) {
+	uuidJSON := struct {
 		UUID string `json:"uuid"`
 	}{
-		UUID: UUID,
+		UUID: uuid,
 	}
-	schema := gojsonschema.NewStringLoader(`
-	{
-		"$schema": "http://json-schema.org/draft-07/schema#",
-		"type": "object",
-		"properties": {
-			"uuid": { 
-				"type": "string", 
-				"format": "uuid"
-			}
-		}
-	}`)
-	loader := gojsonschema.NewGoLoader(uuid)
+	schema := gojsonschema.NewStringLoader(UUIDSchema)
+	loader := gojsonschema.NewGoLoader(uuidJSON)
 
 	return validate(schema, loader)
 }
@@ -66,11 +45,13 @@ func validate(schema, loader gojsonschema.JSONLoader) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+
 	if !result.Valid() {
 		errorMessage := "\n"
 		for _, e := range result.Errors() {
 			errorMessage = errorMessage + " " + e.String() + "\n"
 		}
+
 		return false, fmt.Errorf("%v", errorMessage)
 	}
 

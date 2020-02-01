@@ -1,6 +1,7 @@
 package client
 
 import (
+	"net/http"
 	"testing"
 
 	"github.com/jarcoal/httpmock"
@@ -29,7 +30,7 @@ func TestFetch(t *testing.T) {
 	httpmock.RegisterResponder(
 		"GET",
 		`/v1/organisation/accounts/cd27e265-9605-4b4b-a0e5-3003ea9cc4dc`,
-		httpmock.NewStringResponder(200, model.AccountResponseJSON),
+		httpmock.NewStringResponder(http.StatusOK, model.AccountResponseJSON),
 	)
 
 	accountRestClient, err := New("http://test")
@@ -68,7 +69,7 @@ func TestCreate(t *testing.T) {
 	httpmock.RegisterResponder(
 		"POST",
 		`/v1/organisation/accounts`,
-		httpmock.NewStringResponder(200, model.AccountResponseJSON),
+		httpmock.NewStringResponder(http.StatusOK, model.AccountResponseJSON),
 	)
 
 	accountRestClient, err := New("http://test")
@@ -81,4 +82,24 @@ func TestCreate(t *testing.T) {
 
 	assert.Nil(err, "Error should be nil")
 	assert.EqualValues(expectedAccount, createdAccount, "Response should be same")
+}
+
+func TestDelete(t *testing.T) {
+	assert := assert.New(t)
+
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	httpmock.RegisterResponder(
+		"DELETE",
+		`/v1/organisation/accounts/cd27e265-9605-4b4b-a0e5-3003ea9cc4dc?version=0`,
+		httpmock.NewStringResponder(http.StatusNoContent, ""),
+	)
+
+	accountRestClient, err := New("http://test")
+	assert.Nil(err, "Error should be nil")
+	httpmock.ActivateNonDefault(accountRestClient.Client.GetClient())
+
+	err = accountRestClient.Delete("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc", 0)
+	assert.Nil(err, "Error should be nil")
 }
