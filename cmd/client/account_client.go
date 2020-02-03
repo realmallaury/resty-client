@@ -22,6 +22,9 @@ const CreateAccountEndpoint = "/v1/organisation/accounts"
 // DeleteAccountEndpoint is path resource for deleting account
 const DeleteAccountEndpoint = "/v1/organisation/accounts/{account_id}?version={version}"
 
+// ListAccountsEndpoint is path resource for listing accounts
+const ListAccountsEndpoint = "/v1/organisation/accounts"
+
 // AccountRestClient represent account rest client
 type AccountRestClient struct {
 	Client *resty.Client
@@ -132,13 +135,45 @@ func (r *AccountRestClient) Delete(accountID string, version int) error {
 		}).
 		Delete(DeleteAccountEndpoint)
 	if err != nil {
-		r.Logger.Printf("Error deleting account: %v", err)
+		r.Logger.Printf("error deleting account: %v", err)
 		return err
 	}
 
 	if resp.IsError() {
-		return fmt.Errorf("rror deleting account: %v", string(resp.Body()))
+		return fmt.Errorf("error deleting account: %v", string(resp.Body()))
 	}
 
 	return nil
+}
+
+// List returns existing accounts.
+// Page number and page size are optional values with deafault values of 0 and 100.
+func (r *AccountRestClient) List(pageNumber, pageSize int) ([]model.Account, error) {
+	var accounts []model.Account
+
+	if pageSize == 0 {
+		pageSize = 100
+	}
+
+	resp, err := r.Client.R().
+		SetQueryParams(map[string]string{
+			"page[number]:": strconv.Itoa(pageNumber),
+			"page[size]":    strconv.Itoa(pageSize),
+		}).
+		Get(ListAccountsEndpoint)
+	if err != nil {
+		r.Logger.Printf("error lising account: %v", err)
+		return accounts, err
+	}
+
+	if resp.IsError() {
+		return accounts, fmt.Errorf("error lisitng account: %v", string(resp.Body()))
+	}
+
+	accounts, err = model.UnmarshallToAccounts(resp.Body())
+	if err != nil {
+		r.Logger.Printf("error parsing get accounts response: %v", err)
+	}
+
+	return accounts, nil
 }

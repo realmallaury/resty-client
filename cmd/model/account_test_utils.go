@@ -163,3 +163,252 @@ const AccountResponseJSON = `{
 		"self": "/v1/organisation/accounts/cd27e265-9605-4b4b-a0e5-3003ea9cc4dc"
 	}
 }`
+
+const AccountsResponseJSON = `{
+	"data": [{
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.245Z",
+		"id": "7da2b89c-e2ff-40e4-8c15-45091bb1f190",
+		"modified_on": "2020-02-02T21:46:09.245Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.260Z",
+		"id": "1b738e4f-46ac-4e1d-9d93-7e0e38e81ea9",
+		"modified_on": "2020-02-02T21:46:09.260Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.271Z",
+		"id": "c6dc2231-9c67-47a2-957b-404c40848222",
+		"modified_on": "2020-02-02T21:46:09.271Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.282Z",
+		"id": "4af58f22-2c24-43a4-9620-0c81105698ed",
+		"modified_on": "2020-02-02T21:46:09.282Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.291Z",
+		"id": "2d7b8c7d-3fb0-4507-bb63-0e7cc5dccae2",
+		"modified_on": "2020-02-02T21:46:09.291Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.302Z",
+		"id": "22913643-4372-4ebc-82a7-f36ae2944acd",
+		"modified_on": "2020-02-02T21:46:09.302Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.308Z",
+		"id": "d3e48bdc-6b0d-43a6-9284-9ebdddabc2a6",
+		"modified_on": "2020-02-02T21:46:09.308Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.317Z",
+		"id": "c549b64c-1287-4596-965c-27f183738628",
+		"modified_on": "2020-02-02T21:46:09.317Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.331Z",
+		"id": "e3468fe8-5c4a-477a-b353-189846f67e09",
+		"modified_on": "2020-02-02T21:46:09.331Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}, {
+		"attributes": {
+			"account_classification": "Personal",
+			"account_matching_opt_out": false,
+			"account_number": "41426819",
+			"alternative_bank_account_names": ["Sam Holder"],
+			"bank_account_name": "Samantha Holder",
+			"bank_id": "400300",
+			"bank_id_code": "GBDSC",
+			"base_currency": "GBP",
+			"bic": "NWBKGB22",
+			"country": "GB",
+			"first_name": "Samantha",
+			"iban": "GB11NWBK40030041426819",
+			"joint_account": false,
+			"secondary_identification": "A1B2C3D4",
+			"title": "Ms"
+		},
+		"created_on": "2020-02-02T21:46:09.341Z",
+		"id": "ae06ef04-e7e7-469f-9a85-14665d6d977f",
+		"modified_on": "2020-02-02T21:46:09.341Z",
+		"organisation_id": "eb0bd6f5-c3f5-44b2-b677-acd23cdde73c",
+		"type": "accounts",
+		"version": 0
+	}],
+	"links": {
+		"first": "/v1/organisation/accounts?page%5Bnumber%5D=first\u0026page%5Bsize%5D=10",
+		"last": "/v1/organisation/accounts?page%5Bnumber%5D=last\u0026page%5Bsize%5D=10",
+		"self": "/v1/organisation/accounts?page%5Bnumber%5D=%7Bpage_number%7D\u0026page%5Bsize%5D=10"
+	}
+}`

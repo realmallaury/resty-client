@@ -18,6 +18,16 @@ func TestUnmarshallToAccount(t *testing.T) {
 	assert.EqualValues(expectedAcc, acc, "Account should be correctely unmarshalled")
 }
 
+func TestUnmarshallToAccounts(t *testing.T) {
+	assert := assert.New(t)
+
+	byteJSON := []byte(AccountsResponseJSON)
+	accounts, err := UnmarshallToAccounts(byteJSON)
+
+	assert.Nil(err, "Error should be nil")
+	assert.Len(accounts, 10, "Accounts should contain 10 elements")
+}
+
 func TestMarshallToAccount(t *testing.T) {
 	assert := assert.New(t)
 

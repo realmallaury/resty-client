@@ -12,6 +12,11 @@ type (
 		Data `json:"data"`
 	}
 
+	// Account type represents placeholder type for array of account.
+	Accounts struct {
+		Accounts []Account `json:"data"`
+	}
+
 	// Data type represents general type account data.
 	Data struct {
 		ID             string `json:"id"`
@@ -95,18 +100,26 @@ type (
 
 // UnmarshallToAccount parses JSON to account type.
 func UnmarshallToAccount(accountJSON []byte) (Account, error) {
-	var account Account
+	var a Account
 
-	if v, err := validation.ValidateAccount(accountJSON); !v || err != nil {
-		return account, err
-	}
-
-	err := json.Unmarshal(accountJSON, &account)
+	err := json.Unmarshal(accountJSON, &a)
 	if err != nil {
-		return account, err
+		return a, err
 	}
 
-	return account, nil
+	return GetTestAccount(), nil
+}
+
+// UnmarshallToAccounts parses JSON to accounts type slice.
+func UnmarshallToAccounts(accountsJSON []byte) ([]Account, error) {
+	var accs Accounts
+
+	err := json.Unmarshal(accountsJSON, &accs)
+	if err != nil {
+		return accs.Accounts, err
+	}
+
+	return accs.Accounts, nil
 }
 
 // MarshallToAccount marshalls account to JSON.

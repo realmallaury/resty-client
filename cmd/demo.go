@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/google/uuid"
 	"github.com/push-er/resty-client/cmd/client"
 	"github.com/push-er/resty-client/cmd/model"
 )
@@ -17,25 +18,49 @@ func main() {
 		logger.Fatalf("Cannot initialize rest client: %v", err)
 	}
 
-	account := model.GetTestCreateAccount()
+	// account := model.GetTestCreateAccount()
 
-	createdAccount, err := accountRestClient.Create(account)
-	if err != nil {
-		logger.Fatalf("Cannot create account: %v", err)
+	// createdAccount, err := accountRestClient.Create(account)
+	// if err != nil {
+	// 	logger.Fatalf("Cannot create account: %v", err)
+	// }
+
+	// fmt.Printf("Account:\n %+v\n\n", account)
+	// fmt.Printf("Created account:\n %+v\n\n", createdAccount)
+
+	// account, err = accountRestClient.Fetch("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc")
+	// if err != nil {
+	// 	logger.Fatalf("Cannot fetch account data: %v", err)
+	// }
+
+	// fmt.Printf("Account:\n %+v\n\n", account)
+
+	// err = accountRestClient.Delete("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc", 0)
+	// if err != nil {
+	// 	logger.Fatalf("Cannot delete account: %v", err)
+	// }
+
+	for i := 1; i <= 10; i++ {
+		account := model.GetTestCreateAccount()
+		account.ID = uuid.New().String()
+
+		_, err := accountRestClient.Create(account)
+		if err != nil {
+			logger.Fatalf("Cannot create account: %v", err)
+		}
 	}
 
-	fmt.Printf("Account:\n %+v\n\n", account)
-	fmt.Printf("Created account:\n %+v\n\n", createdAccount)
-
-	account, err = accountRestClient.Fetch("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc")
+	accounts, err := accountRestClient.List(0, 5)
 	if err != nil {
-		logger.Fatalf("Cannot fetch account data: %v", err)
+		logger.Fatalf("Cannot list accounts: %v", err)
 	}
 
-	fmt.Printf("Account:\n %+v\n\n", account)
+	fmt.Printf("Account:\n %+v\n\n", accounts)
 
-	err = accountRestClient.Delete("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc", 0)
+	accounts, err = accountRestClient.List(1, 5)
 	if err != nil {
-		logger.Fatalf("Cannot delete account: %v", err)
+		logger.Fatalf("Cannot list accounts: %v", err)
 	}
+
+	fmt.Printf("Account:\n %+v\n\n", accounts)
 }
