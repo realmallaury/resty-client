@@ -1,4 +1,4 @@
-module github.com/push-er/resty-client
+module github.com/realmallaury/resty-client
 
 go 1.13
 

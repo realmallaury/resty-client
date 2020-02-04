@@ -6,7 +6,7 @@ RUN set -ex; \
     apk add --no-cache git
 
 # Set working directory
-WORKDIR /go/src/github.com/push-er/resty-client/
+WORKDIR /go/src/github.com/realmallaury/resty-client/
 
 # Run tests
 CMD CGO_ENABLED=0 go test ./... -p 1 -tags=integration

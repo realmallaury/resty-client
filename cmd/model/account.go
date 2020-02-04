@@ -3,7 +3,7 @@ package model
 import (
 	"encoding/json"
 
-	"github.com/push-er/resty-client/internal/validation"
+	"github.com/realmallaury/resty-client/internal/validation"
 )
 
 type (

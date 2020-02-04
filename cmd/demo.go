@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/google/uuid"
-	"github.com/push-er/resty-client/cmd/client"
-	"github.com/push-er/resty-client/cmd/model"
+	"github.com/realmallaury/resty-client/cmd/client"
+	"github.com/realmallaury/resty-client/cmd/model"
 )
 
 func main() {

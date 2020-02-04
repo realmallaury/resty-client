@@ -58,7 +58,7 @@ services:
       - postgresql
       - vault
     volumes:
-      - $PWD:/go/src/github.com/push-er/resty-client/
+      - $PWD:/go/src/github.com/realmallaury/resty-client/
     depends_on:
       - accountapi
     network_mode: host

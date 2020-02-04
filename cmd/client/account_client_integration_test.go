@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/push-er/resty-client/cmd/model"
+	"github.com/realmallaury/resty-client/cmd/model"
 	"github.com/stretchr/testify/assert"
 )
 

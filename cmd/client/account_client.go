@@ -9,8 +9,8 @@ import (
 
 	resty "github.com/go-resty/resty/v2"
 
-	"github.com/push-er/resty-client/cmd/model"
-	"github.com/push-er/resty-client/internal/validation"
+	"github.com/realmallaury/resty-client/cmd/model"
+	"github.com/realmallaury/resty-client/internal/validation"
 )
 
 // AccountEndpoint is path resource for account
