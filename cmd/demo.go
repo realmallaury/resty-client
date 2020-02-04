@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/uuid"
 	"github.com/realmallaury/resty-client/cmd/client"
 	"github.com/realmallaury/resty-client/cmd/model"
 )
@@ -18,15 +17,15 @@ func main() {
 		logger.Fatalf("Cannot initialize rest client: %v", err)
 	}
 
-	// account := model.GetTestCreateAccount()
+	account := model.GetTestCreateAccount()
 
-	// createdAccount, err := accountRestClient.Create(account)
-	// if err != nil {
-	// 	logger.Fatalf("Cannot create account: %v", err)
-	// }
+	createdAccount, err := accountRestClient.Create(account)
+	if err != nil {
+		logger.Fatalf("Cannot create account: %v", err)
+	}
 
-	// fmt.Printf("Account:\n %+v\n\n", account)
-	// fmt.Printf("Created account:\n %+v\n\n", createdAccount)
+	fmt.Printf("Account:\n %+v\n\n", account)
+	fmt.Printf("Created account:\n %+v\n\n", createdAccount)
 
 	// account, err = accountRestClient.Fetch("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc")
 	// if err != nil {
@@ -40,27 +39,27 @@ func main() {
 	// 	logger.Fatalf("Cannot delete account: %v", err)
 	// }
 
-	for i := 1; i <= 10; i++ {
-		account := model.GetTestCreateAccount()
-		account.ID = uuid.New().String()
+	// for i := 1; i <= 10; i++ {
+	// 	account := model.GetTestCreateAccount()
+	// 	account.ID = uuid.New().String()
 
-		_, err := accountRestClient.Create(account)
-		if err != nil {
-			logger.Fatalf("Cannot create account: %v", err)
-		}
-	}
+	// 	_, err := accountRestClient.Create(account)
+	// 	if err != nil {
+	// 		logger.Fatalf("Cannot create account: %v", err)
+	// 	}
+	// }
 
-	accounts, err := accountRestClient.List(0, 5)
-	if err != nil {
-		logger.Fatalf("Cannot list accounts: %v", err)
-	}
+	// accounts, err := accountRestClient.List(0, 5)
+	// if err != nil {
+	// 	logger.Fatalf("Cannot list accounts: %v", err)
+	// }
 
-	fmt.Printf("Account:\n %+v\n\n", accounts)
+	// fmt.Printf("Account:\n %+v\n\n", accounts)
 
-	accounts, err = accountRestClient.List(1, 5)
-	if err != nil {
-		logger.Fatalf("Cannot list accounts: %v", err)
-	}
+	// accounts, err = accountRestClient.List(1, 5)
+	// if err != nil {
+	// 	logger.Fatalf("Cannot list accounts: %v", err)
+	// }
 
-	fmt.Printf("Account:\n %+v\n\n", accounts)
+	// fmt.Printf("Account:\n %+v\n\n", accounts)
 }

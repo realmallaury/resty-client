@@ -21,8 +21,8 @@ const AccountsEndpoint = "/v1/organisation/accounts"
 
 // AccountRestClient represent account rest client
 type AccountRestClient struct {
-	Client *resty.Client
-	Logger *log.Logger
+	client *resty.Client
+	logger *log.Logger
 }
 
 // New returns new AccountRestClient instance.
@@ -38,8 +38,8 @@ func New(hostURL string) (*AccountRestClient, error) {
 	c.SetHostURL(hostURL)
 
 	rc := AccountRestClient{
-		Client: c,
-		Logger: logger,
+		client: c,
+		logger: logger,
 	}
 
 	return &rc, nil
@@ -54,13 +54,13 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 		return account, err
 	}
 
-	resp, err := r.Client.R().
+	resp, err := r.client.R().
 		SetPathParams(map[string]string{
 			"account_id": accountID,
 		}).
 		Get(AccountEndpoint)
 	if err != nil {
-		r.Logger.Printf("error fetching account: %v", err)
+		r.logger.Printf("error fetching account: %v", err)
 		return account, err
 	}
 
@@ -70,7 +70,7 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 
 	account, err = model.UnmarshallToAccount(resp.Body())
 	if err != nil {
-		r.Logger.Printf("error parsing get account response: %v", err)
+		r.logger.Printf("error parsing get account response: %v", err)
 	}
 
 	return account, nil
@@ -81,17 +81,17 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 func (r *AccountRestClient) Create(account model.Account) (model.Account, error) {
 	accountJSON, err := model.MarshallToAccount(&account)
 	if err != nil {
-		r.Logger.Printf("error marshalling account: %+v to JSON: %v", account, err)
+		r.logger.Printf("error marshalling account: %+v to JSON: %v", account, err)
 		return account, err
 	}
 
-	resp, err := r.Client.R().
+	resp, err := r.client.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(accountJSON).
 		SetResult(&account).
 		Post(AccountsEndpoint)
 	if err != nil {
-		r.Logger.Printf("error fetching account: %v", err)
+		r.logger.Printf("error fetching account: %v", err)
 		return account, err
 	}
 
@@ -99,13 +99,13 @@ func (r *AccountRestClient) Create(account model.Account) (model.Account, error)
 
 	err = json.Unmarshal(resp.Body(), &created)
 	if err != nil {
-		r.Logger.Printf("error parsing account creted response: %v", err)
+		r.logger.Printf("error parsing account creted response: %v", err)
 		return account, err
 	}
 
 	account, err = model.UnmarshallToAccount(resp.Body())
 	if err != nil {
-		r.Logger.Printf("error parsing create account response: %v", err)
+		r.logger.Printf("error parsing create account response: %v", err)
 	}
 
 	if resp.IsError() {
@@ -122,14 +122,14 @@ func (r *AccountRestClient) Delete(accountID string, version int) error {
 		return err
 	}
 
-	resp, err := r.Client.R().
+	resp, err := r.client.R().
 		SetPathParams(map[string]string{
 			"account_id": accountID,
 		}).
 		SetQueryParam("version", strconv.Itoa(version)).
 		Delete(AccountEndpoint)
 	if err != nil {
-		r.Logger.Printf("error deleting account: %v", err)
+		r.logger.Printf("error deleting account: %v", err)
 		return err
 	}
 
@@ -149,14 +149,14 @@ func (r *AccountRestClient) List(pageNumber, pageSize int) ([]model.Account, err
 		pageSize = 100
 	}
 
-	resp, err := r.Client.R().
+	resp, err := r.client.R().
 		SetQueryParams(map[string]string{
 			"page[number]:": strconv.Itoa(pageNumber),
 			"page[size]":    strconv.Itoa(pageSize),
 		}).
 		Get(AccountsEndpoint)
 	if err != nil {
-		r.Logger.Printf("error lising account: %v", err)
+		r.logger.Printf("error lising account: %v", err)
 		return accounts, err
 	}
 
@@ -166,7 +166,7 @@ func (r *AccountRestClient) List(pageNumber, pageSize int) ([]model.Account, err
 
 	accounts, err = model.UnmarshallToAccounts(resp.Body())
 	if err != nil {
-		r.Logger.Printf("error parsing get accounts response: %v", err)
+		r.logger.Printf("error parsing get accounts response: %v", err)
 	}
 
 	return accounts, nil
