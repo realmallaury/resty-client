@@ -13,17 +13,11 @@ import (
 	"github.com/push-er/resty-client/internal/validation"
 )
 
-// FetchAccountEndpoint is path resource for getting account
-const FetchAccountEndpoint = "/v1/organisation/accounts/{account_id}"
+// AccountEndpoint is path resource for account
+const AccountEndpoint = "/v1/organisation/accounts/{account_id}"
 
-// CreateAccountEndpoint is path resource for creating account
-const CreateAccountEndpoint = "/v1/organisation/accounts"
-
-// DeleteAccountEndpoint is path resource for deleting account
-const DeleteAccountEndpoint = "/v1/organisation/accounts/{account_id}?version={version}"
-
-// ListAccountsEndpoint is path resource for listing accounts
-const ListAccountsEndpoint = "/v1/organisation/accounts"
+// AccountsEndpoint is path resource for accounts
+const AccountsEndpoint = "/v1/organisation/accounts"
 
 // AccountRestClient represent account rest client
 type AccountRestClient struct {
@@ -64,7 +58,7 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 		SetPathParams(map[string]string{
 			"account_id": accountID,
 		}).
-		Get(FetchAccountEndpoint)
+		Get(AccountEndpoint)
 	if err != nil {
 		r.Logger.Printf("error fetching account: %v", err)
 		return account, err
@@ -95,7 +89,7 @@ func (r *AccountRestClient) Create(account model.Account) (model.Account, error)
 		SetHeader("Content-Type", "application/json").
 		SetBody(accountJSON).
 		SetResult(&account).
-		Post(CreateAccountEndpoint)
+		Post(AccountsEndpoint)
 	if err != nil {
 		r.Logger.Printf("error fetching account: %v", err)
 		return account, err
@@ -131,9 +125,9 @@ func (r *AccountRestClient) Delete(accountID string, version int) error {
 	resp, err := r.Client.R().
 		SetPathParams(map[string]string{
 			"account_id": accountID,
-			"version":    strconv.Itoa(version),
 		}).
-		Delete(DeleteAccountEndpoint)
+		SetQueryParam("version", strconv.Itoa(version)).
+		Delete(AccountEndpoint)
 	if err != nil {
 		r.Logger.Printf("error deleting account: %v", err)
 		return err
@@ -160,7 +154,7 @@ func (r *AccountRestClient) List(pageNumber, pageSize int) ([]model.Account, err
 			"page[number]:": strconv.Itoa(pageNumber),
 			"page[size]":    strconv.Itoa(pageSize),
 		}).
-		Get(ListAccountsEndpoint)
+		Get(AccountsEndpoint)
 	if err != nil {
 		r.Logger.Printf("error lising account: %v", err)
 		return accounts, err
