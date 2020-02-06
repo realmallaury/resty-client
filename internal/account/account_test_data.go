@@ -1,4 +1,4 @@
-package model
+package account
 
 // GetMissingTestCreateAccount returns test account for creation with missing data.
 func GetMissingTestCreateAccount() Account {

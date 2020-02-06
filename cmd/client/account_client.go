@@ -9,7 +9,7 @@ import (
 
 	resty "github.com/go-resty/resty/v2"
 
-	"github.com/realmallaury/resty-client/cmd/model"
+	"github.com/realmallaury/resty-client/internal/account"
 	"github.com/realmallaury/resty-client/internal/validation"
 )
 
@@ -47,11 +47,11 @@ func New(hostURL string) (*AccountRestClient, error) {
 
 // Fetch gets accound data for provided account id.
 // If account id is not valid UUID or account is not found it returns error.
-func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
-	var account model.Account
+func (r *AccountRestClient) Fetch(accountID string) (account.Account, error) {
+	var acc account.Account
 
 	if v, err := validation.ValidateUUID(accountID); !v || err != nil {
-		return account, err
+		return acc, err
 	}
 
 	resp, err := r.client.R().
@@ -61,38 +61,38 @@ func (r *AccountRestClient) Fetch(accountID string) (model.Account, error) {
 		Get(AccountEndpoint)
 	if err != nil {
 		r.logger.Printf("error fetching account: %v", err)
-		return account, err
+		return acc, err
 	}
 
 	if resp.IsError() {
-		return account, fmt.Errorf("error fetching account: %v", string(resp.Body()))
+		return acc, fmt.Errorf("error fetching account: %v", string(resp.Body()))
 	}
 
-	account, err = model.UnmarshallToAccount(resp.Body())
+	acc, err = account.UnmarshallToAccount(resp.Body())
 	if err != nil {
 		r.logger.Printf("error parsing get account response: %v", err)
 	}
 
-	return account, nil
+	return acc, nil
 }
 
 // Create creates new account.
 // If account data is not valid or account there is error while creating account it returns error.
-func (r *AccountRestClient) Create(account model.Account) (model.Account, error) {
-	accountJSON, err := model.MarshallToAccount(&account)
+func (r *AccountRestClient) Create(acc account.Account) (account.Account, error) {
+	accountJSON, err := account.MarshallToAccount(&acc)
 	if err != nil {
-		r.logger.Printf("error marshalling account: %+v to JSON: %v", account, err)
-		return account, err
+		r.logger.Printf("error marshalling account: %+v to JSON: %v", acc, err)
+		return acc, err
 	}
 
 	resp, err := r.client.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(accountJSON).
-		SetResult(&account).
+		SetResult(&acc).
 		Post(AccountsEndpoint)
 	if err != nil {
 		r.logger.Printf("error fetching account: %v", err)
-		return account, err
+		return acc, err
 	}
 
 	created := make(map[string]interface{})
@@ -100,19 +100,19 @@ func (r *AccountRestClient) Create(account model.Account) (model.Account, error)
 	err = json.Unmarshal(resp.Body(), &created)
 	if err != nil {
 		r.logger.Printf("error parsing account creted response: %v", err)
-		return account, err
+		return acc, err
 	}
 
-	account, err = model.UnmarshallToAccount(resp.Body())
+	acc, err = account.UnmarshallToAccount(resp.Body())
 	if err != nil {
 		r.logger.Printf("error parsing create account response: %v", err)
 	}
 
 	if resp.IsError() {
-		return account, fmt.Errorf("error creating account: %v", string(resp.Body()))
+		return acc, fmt.Errorf("error creating account: %v", string(resp.Body()))
 	}
 
-	return account, nil
+	return acc, nil
 }
 
 // Delete deletes existing account.
@@ -142,8 +142,8 @@ func (r *AccountRestClient) Delete(accountID string, version int) error {
 
 // List returns existing accounts.
 // Page number and page size are optional values with deafault values of 0 and 100.
-func (r *AccountRestClient) List(pageNumber, pageSize int) ([]model.Account, error) {
-	var accounts []model.Account
+func (r *AccountRestClient) List(pageNumber, pageSize int) ([]account.Account, error) {
+	var accs []account.Account
 
 	if pageSize == 0 {
 		pageSize = 100
@@ -157,17 +157,17 @@ func (r *AccountRestClient) List(pageNumber, pageSize int) ([]model.Account, err
 		Get(AccountsEndpoint)
 	if err != nil {
 		r.logger.Printf("error lising account: %v", err)
-		return accounts, err
+		return accs, err
 	}
 
 	if resp.IsError() {
-		return accounts, fmt.Errorf("error lisitng account: %v", string(resp.Body()))
+		return accs, fmt.Errorf("error lisitng account: %v", string(resp.Body()))
 	}
 
-	accounts, err = model.UnmarshallToAccounts(resp.Body())
+	accs, err = account.UnmarshallToAccounts(resp.Body())
 	if err != nil {
 		r.logger.Printf("error parsing get accounts response: %v", err)
 	}
 
-	return accounts, nil
+	return accs, nil
 }

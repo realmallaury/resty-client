@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/realmallaury/resty-client/cmd/model"
+	"github.com/realmallaury/resty-client/internal/account"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,7 +27,7 @@ func TestFetch(t *testing.T) {
 	url, server := MockHTTPServerEndpoint(
 		http.MethodGet,
 		"/v1/organisation/accounts/cd27e265-9605-4b4b-a0e5-3003ea9cc4dc",
-		model.AccountResponseJSON,
+		account.AccountResponseJSON,
 		http.StatusOK,
 	)
 	defer server.Close()
@@ -40,7 +40,7 @@ func TestFetch(t *testing.T) {
 
 	acc, err := accountRestClient.Fetch("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc")
 	assert.Nil(err, "Error should be nil")
-	assert.EqualValues(model.GetTestAccount(), acc, "Response should be same")
+	assert.EqualValues(account.GetTestAccount(), acc, "Response should be same")
 }
 
 func TestCreateBadAccountData(t *testing.T) {
@@ -49,7 +49,7 @@ func TestCreateBadAccountData(t *testing.T) {
 	accountRestClient, err := New("http://test")
 	assert.Nil(err, "Error should be nil")
 
-	account := model.GetMissingTestCreateAccount()
+	account := account.GetMissingTestCreateAccount()
 	_, err = accountRestClient.Create(account)
 	assert.Error(err, "Creaate(...) should return error")
 }
@@ -60,7 +60,7 @@ func TestCreate(t *testing.T) {
 	url, server := MockHTTPServerEndpoint(
 		http.MethodPost,
 		"/v1/organisation/accounts",
-		model.AccountResponseJSON,
+		account.AccountResponseJSON,
 		http.StatusOK,
 	)
 	defer server.Close()
@@ -68,9 +68,9 @@ func TestCreate(t *testing.T) {
 	accountRestClient, err := New(url)
 	assert.Nil(err, "Error should be nil")
 
-	account := model.GetTestCreateAccount()
-	expectedAccount := model.GetTestAccount()
-	createdAccount, err := accountRestClient.Create(account)
+	acc := account.GetTestCreateAccount()
+	expectedAccount := account.GetTestAccount()
+	createdAccount, err := accountRestClient.Create(acc)
 
 	assert.Nil(err, "Error should be nil")
 	assert.EqualValues(expectedAccount, createdAccount, "Response should be same")
@@ -100,7 +100,7 @@ func TestList(t *testing.T) {
 	url, server := MockHTTPServerEndpoint(
 		http.MethodGet,
 		"/v1/organisation/accounts?page%5Bnumber%5D%3A=0&page%5Bsize%5D=100",
-		model.AccountsResponseJSON,
+		account.AccountsResponseJSON,
 		http.StatusOK,
 	)
 	defer server.Close()

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/realmallaury/resty-client/cmd/model"
+	"github.com/realmallaury/resty-client/internal/account"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,8 +27,8 @@ func TestCreateBadAccountDataIntegration(t *testing.T) {
 	accountRestClient, err := New("http://localhost:8080")
 	assert.Nil(err, "Error should be nil")
 
-	account := model.GetMissingTestCreateAccount()
-	_, err = accountRestClient.Create(account)
+	acc := account.GetMissingTestCreateAccount()
+	_, err = accountRestClient.Create(acc)
 	assert.Error(err, "Create(...) should return error")
 }
 
@@ -38,9 +38,9 @@ func TestCreateIntegration(t *testing.T) {
 	accountRestClient, err := New("http://localhost:8080")
 	assert.Nil(err, "Error should be nil")
 
-	account := model.GetTestCreateAccount()
-	expectedAccount := model.GetTestAccount()
-	createdAccount, err := accountRestClient.Create(account)
+	acc := account.GetTestCreateAccount()
+	expectedAccount := account.GetTestAccount()
+	createdAccount, err := accountRestClient.Create(acc)
 
 	assert.Nil(err, "Error should be nil")
 	assert.EqualValues(expectedAccount, createdAccount, "Response should be same")
@@ -63,22 +63,22 @@ func TestLisIntegration(t *testing.T) {
 	assert.Nil(err, "Error should be nil")
 
 	for i := 1; i <= 10; i++ {
-		account := model.GetTestCreateAccount()
+		acc := account.GetTestCreateAccount()
 		account.ID = uuid.New().String()
 
-		_, err := accountRestClient.Create(account)
+		_, err := accountRestClient.Create(acc)
 		assert.Nil(err, "Error should be nil")
 	}
 
-	accounts, err := accountRestClient.List(0, 100)
+	accs, err := accountRestClient.List(0, 100)
 	assert.Nil(err, "Error should be nil")
-	assert.Len(accounts, 10, "Accounts should contain 10 elements")
+	assert.Len(accs, 10, "Accounts should contain 10 elements")
 
-	accounts, err = accountRestClient.List(0, 5)
+	accs, err = accountRestClient.List(0, 5)
 	assert.Nil(err, "Error should be nil")
-	assert.Len(accounts, 5, "Accounts should contain 5 elements")
+	assert.Len(accs, 5, "Accounts should contain 5 elements")
 
-	accounts, err = accountRestClient.List(1, 5)
+	accs, err = accountRestClient.List(1, 5)
 	assert.Nil(err, "Error should be nil")
-	assert.Len(accounts, 5, "Accounts should contain 5 elements")
+	assert.Len(accs, 5, "Accounts should contain 5 elements")
 }

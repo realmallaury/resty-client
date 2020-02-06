@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/realmallaury/resty-client/cmd/client"
-	"github.com/realmallaury/resty-client/cmd/model"
+	"github.com/realmallaury/resty-client/cmd/account"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 		logger.Fatalf("Cannot initialize rest client: %v", err)
 	}
 
-	account := model.GetTestCreateAccount()
+	account := account.GetTestCreateAccount()
 
 	createdAccount, err := accountRestClient.Create(account)
 	if err != nil {
@@ -40,7 +40,7 @@ func main() {
 	// }
 
 	// for i := 1; i <= 10; i++ {
-	// 	account := model.GetTestCreateAccount()
+	// 	account := account.GetTestCreateAccount()
 	// 	account.ID = uuid.New().String()
 
 	// 	_, err := accountRestClient.Create(account)

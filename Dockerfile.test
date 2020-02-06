@@ -5,6 +5,13 @@ RUN set -ex; \
     apk update; \
     apk add --no-cache git
 
+# set go path and bin folders
+ENV GOPATH /go/src
+ENV GOBIN /go/bin
+
+# copy project files to image
+COPY . /go/src/github.com/realmallaury/resty-client
+
 # Set working directory
 WORKDIR /go/src/github.com/realmallaury/resty-client/
 
