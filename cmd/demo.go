@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/realmallaury/resty-client/cmd/client"
-	"github.com/realmallaury/resty-client/cmd/account"
+	"github.com/realmallaury/resty-client/internal/account"
 )
 
 func main() {

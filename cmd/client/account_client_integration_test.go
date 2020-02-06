@@ -64,7 +64,7 @@ func TestLisIntegration(t *testing.T) {
 
 	for i := 1; i <= 10; i++ {
 		acc := account.GetTestCreateAccount()
-		account.ID = uuid.New().String()
+		acc.ID = uuid.New().String()
 
 		_, err := accountRestClient.Create(acc)
 		assert.Nil(err, "Error should be nil")
