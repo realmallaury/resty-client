@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	resty "github.com/go-resty/resty/v2"
+	"github.com/go-resty/resty/v2"
 
 	"github.com/realmallaury/resty-client/internal/account"
 	"github.com/realmallaury/resty-client/internal/validation"
