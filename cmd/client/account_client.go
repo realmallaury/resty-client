@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/go-resty/resty/v2"
+	"github.com/pkg/errors"
 
 	"github.com/realmallaury/resty-client/internal/account"
 	"github.com/realmallaury/resty-client/internal/validation"
@@ -32,7 +33,7 @@ func New(hostURL string) (*AccountRestClient, error) {
 	c := resty.New()
 
 	if v, err := validation.ValidateURL(hostURL); !v || err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "validate host URL")
 	}
 
 	c.SetHostURL(hostURL)
@@ -60,8 +61,7 @@ func (r *AccountRestClient) Fetch(accountID string) (account.Account, error) {
 		}).
 		Get(AccountEndpoint)
 	if err != nil {
-		r.logger.Printf("error fetching account: %v", err)
-		return acc, err
+		return acc, errors.Wrapf(err, "error fetching account: %v", accountID)
 	}
 
 	if resp.IsError() {
@@ -70,7 +70,7 @@ func (r *AccountRestClient) Fetch(accountID string) (account.Account, error) {
 
 	acc, err = account.UnmarshallToAccount(resp.Body())
 	if err != nil {
-		r.logger.Printf("error parsing get account response: %v", err)
+		return acc, errors.Wrap(err, "error parsing account response")
 	}
 
 	return acc, nil
@@ -81,8 +81,7 @@ func (r *AccountRestClient) Fetch(accountID string) (account.Account, error) {
 func (r *AccountRestClient) Create(acc account.Account) (account.Account, error) {
 	accountJSON, err := account.MarshallToAccount(&acc)
 	if err != nil {
-		r.logger.Printf("error marshalling account: %+v to JSON: %v", acc, err)
-		return acc, err
+		return acc, errors.Wrap(err, "error marshalling account to JSON")
 	}
 
 	resp, err := r.client.R().
@@ -91,16 +90,14 @@ func (r *AccountRestClient) Create(acc account.Account) (account.Account, error)
 		SetResult(&acc).
 		Post(AccountsEndpoint)
 	if err != nil {
-		r.logger.Printf("error fetching account: %v", err)
-		return acc, err
+		return acc, errors.Wrap(err, "error creating account")
 	}
 
 	created := make(map[string]interface{})
 
 	err = json.Unmarshal(resp.Body(), &created)
 	if err != nil {
-		r.logger.Printf("error parsing account creted response: %v", err)
-		return acc, err
+		return acc, errors.Wrap(err, "error unmarshalling account response")
 	}
 
 	acc, err = account.UnmarshallToAccount(resp.Body())
@@ -129,8 +126,7 @@ func (r *AccountRestClient) Delete(accountID string, version int) error {
 		SetQueryParam("version", strconv.Itoa(version)).
 		Delete(AccountEndpoint)
 	if err != nil {
-		r.logger.Printf("error deleting account: %v", err)
-		return err
+		return errors.Wrapf(err, "error deleting account: %v", accountID)
 	}
 
 	if resp.IsError() {
@@ -157,16 +153,16 @@ func (r *AccountRestClient) List(pageNumber, pageSize int) ([]account.Account, e
 		Get(AccountsEndpoint)
 	if err != nil {
 		r.logger.Printf("error lising account: %v", err)
-		return accs, err
+		return accs, errors.Wrapf(err, "error lising accounts")
 	}
 
 	if resp.IsError() {
-		return accs, fmt.Errorf("error lisitng account: %v", string(resp.Body()))
+		return accs, fmt.Errorf("error lisitng accounts: %v", string(resp.Body()))
 	}
 
 	accs, err = account.UnmarshallToAccounts(resp.Body())
 	if err != nil {
-		r.logger.Printf("error parsing get accounts response: %v", err)
+		return accs, errors.Wrap(err, "error parsing accounts response")
 	}
 
 	return accs, nil

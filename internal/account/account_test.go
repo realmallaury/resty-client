@@ -14,7 +14,7 @@ func TestUnmarshallToAccount(t *testing.T) {
 	expectedAcc := GetTestAccount()
 	acc, err := UnmarshallToAccount(byteJSON)
 
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 	assert.EqualValues(expectedAcc, acc, "Account should be correctely unmarshalled")
 }
 
@@ -24,7 +24,7 @@ func TestUnmarshallToAccounts(t *testing.T) {
 	byteJSON := []byte(AccountsResponseJSON)
 	accounts, err := UnmarshallToAccounts(byteJSON)
 
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 	assert.Len(accounts, 10, "Accounts should contain 10 elements")
 }
 
@@ -39,7 +39,7 @@ func TestMarshallToAccount(t *testing.T) {
 	acc = GetTestCreateAccount()
 	accountJSON, err := MarshallToAccount(&acc)
 
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 	assert.True(compareJSON(accountJSON, []byte(AccountRequestJSON)), "Account should be correctely unmarshalled")
 }
 

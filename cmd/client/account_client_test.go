@@ -13,7 +13,7 @@ func TestNew(t *testing.T) {
 	assert := assert.New(t)
 
 	accountRestClient, err := New("http://test")
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 	assert.NotNil(accountRestClient, "accountRestClient should not be nil")
 
 	accountRestClient, err = New("http:test")
@@ -39,7 +39,7 @@ func TestFetch(t *testing.T) {
 	assert.Error(err, "Fetch(...) should return error")
 
 	acc, err := accountRestClient.Fetch("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc")
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 	assert.EqualValues(account.GetTestAccount(), acc, "Response should be same")
 }
 
@@ -66,13 +66,13 @@ func TestCreate(t *testing.T) {
 	defer server.Close()
 
 	accountRestClient, err := New(url)
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 
 	acc := account.GetTestCreateAccount()
 	expectedAccount := account.GetTestAccount()
 	createdAccount, err := accountRestClient.Create(acc)
 
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 	assert.EqualValues(expectedAccount, createdAccount, "Response should be same")
 }
 
@@ -88,10 +88,10 @@ func TestDelete(t *testing.T) {
 	defer server.Close()
 
 	accountRestClient, err := New(url)
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 
 	err = accountRestClient.Delete("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc", 0)
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 }
 
 func TestList(t *testing.T) {
@@ -106,11 +106,11 @@ func TestList(t *testing.T) {
 	defer server.Close()
 
 	accountRestClient, err := New(url)
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 
 	accounts, err := accountRestClient.List(0, 100)
 
-	assert.Nil(err, "Error should be nil")
+	assert.NoError(err, "Error should be nil")
 	assert.Len(accounts, 10, "Accounts should contain 10 elements")
 }
 
