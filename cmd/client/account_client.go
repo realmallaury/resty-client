@@ -3,8 +3,6 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 
 	"github.com/go-resty/resty/v2"
@@ -23,13 +21,11 @@ const AccountsEndpoint = "/v1/organisation/accounts"
 // AccountRestClient represent account rest client
 type AccountRestClient struct {
 	client *resty.Client
-	logger *log.Logger
 }
 
 // New returns new AccountRestClient instance.
 // Host url should resolve to valid url otherwise error is returned.
 func New(hostURL string) (*AccountRestClient, error) {
-	logger := log.New(os.Stdout, "Rest client: ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
 	c := resty.New()
 
 	if v, err := validation.ValidateURL(hostURL); !v || err != nil {
@@ -40,7 +36,6 @@ func New(hostURL string) (*AccountRestClient, error) {
 
 	rc := AccountRestClient{
 		client: c,
-		logger: logger,
 	}
 
 	return &rc, nil
@@ -102,7 +97,7 @@ func (r *AccountRestClient) Create(acc account.Account) (account.Account, error)
 
 	acc, err = account.UnmarshallToAccount(resp.Body())
 	if err != nil {
-		r.logger.Printf("error parsing create account response: %v", err)
+		return acc, errors.Wrap(err, "error parsing create account response")
 	}
 
 	if resp.IsError() {
@@ -152,7 +147,6 @@ func (r *AccountRestClient) List(pageNumber, pageSize int) ([]account.Account, e
 		}).
 		Get(AccountsEndpoint)
 	if err != nil {
-		r.logger.Printf("error lising account: %v", err)
 		return accs, errors.Wrapf(err, "error lising accounts")
 	}
 
