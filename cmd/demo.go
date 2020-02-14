@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -24,15 +23,15 @@ func main() {
 		logger.Fatalf("Cannot create account: %v", err)
 	}
 
-	fmt.Printf("Account:\n %+v\n\n", account)
-	fmt.Printf("Created account:\n %+v\n\n", createdAccount)
+	logger.Printf("Account:\n %+v\n\n", account)
+	logger.Printf("Created account:\n %+v\n\n", createdAccount)
 
 	// account, err = accountRestClient.Fetch("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc")
 	// if err != nil {
 	// 	logger.Fatalf("Cannot fetch account data: %v", err)
 	// }
 
-	// fmt.Printf("Account:\n %+v\n\n", account)
+	// logger.Printf("Account:\n %+v\n\n", account)
 
 	// err = accountRestClient.Delete("cd27e265-9605-4b4b-a0e5-3003ea9cc4dc", 0)
 	// if err != nil {
@@ -54,12 +53,12 @@ func main() {
 	// 	logger.Fatalf("Cannot list accounts: %v", err)
 	// }
 
-	// fmt.Printf("Account:\n %+v\n\n", accounts)
+	// logger.Printf("Account:\n %+v\n\n", accounts)
 
 	// accounts, err = accountRestClient.List(1, 5)
 	// if err != nil {
 	// 	logger.Fatalf("Cannot list accounts: %v", err)
 	// }
 
-	// fmt.Printf("Account:\n %+v\n\n", accounts)
+	// logger.Printf("Account:\n %+v\n\n", accounts)
 }
