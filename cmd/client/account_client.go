@@ -136,6 +136,10 @@ func (r *AccountRestClient) Delete(accountID string, version int) error {
 func (r *AccountRestClient) List(pageNumber, pageSize int) ([]account.Account, error) {
 	var accs []account.Account
 
+	if pageNumber < 0 {
+		pageNumber = 0
+	}
+
 	if pageSize == 0 {
 		pageSize = 100
 	}
