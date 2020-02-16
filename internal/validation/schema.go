@@ -1,6 +1,6 @@
 package validation
 
-// URLSchema validates uri string and expects http/https pattern.
+// URLSchema represents valid uri string.
 const URLSchema = `{
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
@@ -13,7 +13,7 @@ const URLSchema = `{
 	}
 }`
 
-// UUIDSchema validates UUID string for correct format..
+// UUIDSchema represents valid UUID string format.
 const UUIDSchema = `{
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",

@@ -1,7 +1,6 @@
 package client
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 
@@ -86,13 +85,6 @@ func (r *AccountRestClient) Create(acc account.Account) (account.Account, error)
 		Post(AccountsEndpoint)
 	if err != nil {
 		return acc, errors.Wrap(err, "error creating account")
-	}
-
-	created := make(map[string]interface{})
-
-	err = json.Unmarshal(resp.Body(), &created)
-	if err != nil {
-		return acc, errors.Wrap(err, "error unmarshalling account response")
 	}
 
 	acc, err = account.UnmarshallToAccount(resp.Body())
